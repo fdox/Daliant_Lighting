@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mira | Daliant Lighting</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased font-sans">
+  <!-- Site Header -->
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <a href="index.html" class="text-xl font-serif text-indigo-600">Daliant Lighting</a>
+      <nav class="space-x-4">
+        <a href="index.html" class="text-gray-700 hover:text-gray-900">Home</a>
+        <a href="explore-fixtures.html" class="text-gray-700 hover:text-gray-900 font-bold">Fixtures</a>
+        <a href="blog.html" class="text-gray-700 hover:text-gray-900">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-8 bg-white rounded-lg shadow">
+    <!-- Image Gallery -->
+    <section class="lg:col-span-2">
+      <div class="relative">
+        <div id="gallery" class="overflow-hidden rounded-md">
+          <img id="currentImage" src="images/mira-1.png" alt="Mira Image 1" class="w-full object-cover h-[500px]" />
+        </div>
+        <!-- Arrows -->
+        <button id="prevBtn" class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white bg-opacity-75 rounded-full p-2 hover:bg-opacity-100">‹</button>
+        <button id="nextBtn" class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white bg-opacity-75 rounded-full p-2 hover:bg-opacity-100">›</button>
+      </div>
+      <!-- Thumbnails -->
+      <div class="mt-4 flex space-x-2">
+        <img src="images/mira-1.png" data-index="0" class="w-20 h-20 object-cover rounded-md cursor-pointer border-2 border-indigo-600" />
+        <img src="images/mira-2.png" data-index="1" class="w-20 h-20 object-cover rounded-md cursor-pointer opacity-50 hover:opacity-100" />
+        <img src="images/mira-3.png" data-index="2" class="w-20 h-20 object-cover rounded-md cursor-pointer opacity-50 hover:opacity-100" />
+        <img src="images/mira-4.png" data-index="3" class="w-20 h-20 object-cover rounded-md cursor-pointer opacity-50 hover:opacity-100" />
+      </div>
+    </section>
+
+    <!-- Sidebar -->
+    <aside class="lg:col-span-1 space-y-6">
+      <h1 class="text-3xl font-serif text-gray-900">Mira Outdoor Wall Fixture</h1>
+      <p class="text-sm text-gray-600 uppercase">SKU: MIR-OUT-WALL-01</p>
+      <!-- Selections -->
+      <div class="space-y-4">
+        <div>
+          <h2 class="font-medium text-gray-700">Color</h2>
+          <p class="text-gray-900">Tunable White</p>
+        </div>
+        <div>
+          <h2 class="font-medium text-gray-700">Size</h2>
+          <div class="mt-2 flex space-x-2">
+            <label class="cursor-pointer">
+              <input type="radio" name="size" value="small" class="sr-only" />
+              <span class="px-3 py-1 border rounded-lg text-sm">Small</span>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="size" value="medium" class="sr-only" checked />
+              <span class="px-3 py-1 border rounded-lg text-sm bg-indigo-600 text-white">Medium</span>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="size" value="large" class="sr-only" />
+              <span class="px-3 py-1 border rounded-lg text-sm">Large</span>
+            </label>
+          </div>
+        </div>
+        <div>
+          <h2 class="font-medium text-gray-700">Communication</h2>
+          <div class="mt-2 flex space-x-2">
+            <label class="cursor-pointer flex items-center space-x-1">
+              <input type="radio" name="comm" value="wired" class="sr-only" checked />
+              <span class="px-3 py-1 border rounded-lg text-sm bg-indigo-600 text-white">Wired</span>
+            </label>
+            <label class="cursor-pointer flex items-center space-x-1">
+              <input type="radio" name="comm" value="wireless" class="sr-only" />
+              <span class="px-3 py-1 border rounded-lg text-sm">Wireless</span>
+            </label>
+          </div>
+        </div>
+        <div>
+          <h2 class="font-medium text-gray-700">Quantity</h2>
+          <div class="mt-2 flex items-center border rounded-lg w-max">
+            <button id="decQty" class="px-3 py-1">–</button>
+            <span id="qty" class="px-4 py-1">1</span>
+            <button id="incQty" class="px-3 py-1">+</button>
+          </div>
+        </div>
+        <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-lg">Add to Quote</button>
+      </div>
+
+            <!-- Accordion removed; Tabs Section below -->
+    </aside>
+  </main>
+
+  <!-- Tabs for Details -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 bg-white rounded-lg shadow">
+    <div class="border-b">
+      <nav class="flex -mb-px">
+        <button data-tab="desc" class="py-4 px-6 text-gray-700 font-medium border-b-2 border-indigo-600">Description</button>
+        <button data-tab="specs" class="py-4 px-6 text-gray-700 font-medium border-b-2 border-transparent hover:border-gray-300">Dimensions & Specs</button>
+        <button data-tab="shipping" class="py-4 px-6 text-gray-700 font-medium border-b-2 border-transparent hover:border-gray-300">Shipping & Returns</button>
+      </nav>
+    </div>
+    <div id="tabContent" class="p-6 text-gray-700">
+      <!-- Description Content -->
+      <div data-content="desc">
+        <p>The Mira Outdoor Wall Fixture combines sleek contemporary design with integrated DALI-2 control and tunable white functionality.</p>
+      </div>
+      <!-- Specs Content -->
+      <div data-content="specs" class="hidden">
+        <ul class="list-disc list-inside">
+          <li>200 lm</li>
+          <li>2700K–4000K</li>
+          <li>5 W</li>
+          <li>Die-cast aluminum</li>
+          <li>IP65</li>
+        </ul>
+      </div>
+      <!-- Shipping Content -->
+      <div data-content="shipping" class="hidden">
+        <p>Ships within 3–5 business days.</p>
+        <p>Free shipping on orders over $200.</p>
+        <p>Returns accepted within 30 days of delivery.</p>
+      </div>
+    </div>
+  </section>
+
+    <!-- Footer -->
+  <script>
+    // Gallery controls
+    const images = [
+      'images/mira-1.png',
+      'images/mira-2.png',
+      'images/mira-3.png',
+      'images/mira-4.png'
+    ];
+    let currentIndex = 0;
+    const currentImage = document.getElementById('currentImage');
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateImage();
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateImage();
+    });
+    document.querySelectorAll('[data-index]').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        currentIndex = parseInt(thumb.getAttribute('data-index'));
+        updateImage();
+      });
+    });
+    function updateImage() {
+      currentImage.src = images[currentIndex];
+      document.querySelectorAll('[data-index]').forEach(thumb => {
+        thumb.classList.toggle('border-indigo-600', parseInt(thumb.getAttribute('data-index')) === currentIndex);
+        thumb.classList.toggle('opacity-50', parseInt(thumb.getAttribute('data-index')) !== currentIndex);
+      });
+    }
+
+    // Quantity controls
+    let qty = 1;
+    const qtySpan = document.getElementById('qty');
+    document.getElementById('incQty').addEventListener('click', () => { qty++; qtySpan.textContent = qty; });
+    document.getElementById('decQty').addEventListener('click', () => { if(qty>1) qty--; qtySpan.textContent = qty; });
+
+    // Tabs logic
+    const tabs = document.querySelectorAll('[data-tab]');
+    const contents = document.querySelectorAll('[data-content]');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-tab');
+        tabs.forEach(t => t.classList.toggle('border-indigo-600', t === tab));
+        contents.forEach(c => c.classList.toggle('hidden', c.getAttribute('data-content') !== target));
+      });
+    });
+  </script>
+  <footer class="mt-12 py-6 bg-white shadow-inner">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600">
+      © 2025 Daliant Lighting. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>
