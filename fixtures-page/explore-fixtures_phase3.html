@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Explore Fixtures | Daliant Lighting</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="canonical" href="https://yourdomain.com/explore-fixtures_phase3.html"/>
+<link rel="canonical" href="https://fdox.github.io/fixtures-page/explore-fixtures.html"/>
 <meta property="og:site_name" content="Daliant Lighting"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<link rel="stylesheet" href="styles_phase3.css"/>
+<link rel="stylesheet" href="/styles_phase3.css"/>
 </head>
 <body>
 <header>
 <div class="nav-container header-flex">
 <nav class="nav-primary" aria-label="Primary">
 <ul>
-<li><a href="explore-fixtures_phase3.html">Explore Fixtures</a>
+<li><a href="/fixtures-page/explore-fixtures.html">Explore Fixtures</a>
 <div class="dropdown">
 <div class="dropdown-column">
 <h4>Indoor Fixtures</h4>
@@ -38,7 +38,7 @@
 </ul>
 </nav>
 <div class="logo logo-align">
-<a href="index_builder_png_phase3.html"><img alt="Daliant Lighting Logo" class="logo-img" src="images/daliant-logo-cropped.png"/></a>
+<a href="/"><img alt="Daliant Lighting Logo" class="logo-img" src="/images/daliant-logo-cropped.png"/></a>
 </div>
 <div class="nav-right nav-flex"><a href="#">Search</a><a href="#">Log In</a><a href="#">Contact</a></div>
 </div>
@@ -48,6 +48,7 @@
   <div class="container text-center">
     <h1>Explore Fixtures</h1>
     <p class="subtitle">Find your perfect DALI-compatible lighting fixture.</p>
+
     <nav class="tabs" aria-label="Fixture category">
       <button class="tab active" data-tab="outdoor" type="button">Outdoor Lighting</button>
       <button class="tab" data-tab="indoor" type="button">Indoor Lighting</button>
@@ -73,18 +74,18 @@
 <main class="container">
   <div id="product-grid" class="product-grid">
 <div class="card" data-location="outdoor" data-type="wall">
-  <a class="card-media" href="fixture-mira.html">
-    <img class="img-off" src="images/mira-off.png" alt="Mira Off" loading="lazy" decoding="async"/>
-    <img class="img-on" src="images/mira-on.png" alt="Mira On" loading="lazy" decoding="async"/>
+  <a class="card-media" href="/fixture-mira.html">
+    <img class="img-off" src="/images/mira-off.png" alt="Mira Off" loading="lazy" decoding="async"/>
+    <img class="img-on" src="/images/mira-on.png" alt="Mira On" loading="lazy" decoding="async"/>
   </a>
-  <h3 class="card-title"><a href="fixture-mira.html">Mira</a></h3>
+  <h3 class="card-title"><a href="/fixture-mira.html">Mira</a></h3>
 </div>
 <div class="card" data-location="indoor" data-type="pendants">
-  <a class="card-media" href="fixture-aven.html">
-    <img class="img-off" src="images/aven-off.jpg" alt="Aven Off" loading="lazy" decoding="async"/>
-    <img class="img-on" src="images/aven-on.jpg" alt="Aven On" loading="lazy" decoding="async"/>
+  <a class="card-media" href="/fixture-aven.html">
+    <img class="img-off" src="/images/aven-off.jpg" alt="Aven Off" loading="lazy" decoding="async"/>
+    <img class="img-on" src="/images/aven-on.jpg" alt="Aven On" loading="lazy" decoding="async"/>
   </a>
-  <h3 class="card-title"><a href="fixture-aven.html">Aven</a></h3>
+  <h3 class="card-title"><a href="/fixture-aven.html">Aven</a></h3>
 </div>
   </div>
 </main>
@@ -157,12 +158,8 @@
 
   document.addEventListener('click', (e)=>{
     const t = e.target;
-    if(t.classList.contains('tab')){
-      setActiveTab(t.dataset.tab);
-    }
-    if(t.classList.contains('filter-btn')){
-      applyFilter(t.dataset.filter);
-    }
+    if(t.classList.contains('tab')) setActiveTab(t.dataset.tab);
+    if(t.classList.contains('filter-btn')) applyFilter(t.dataset.filter);
   });
 
   setActiveTab('outdoor');
