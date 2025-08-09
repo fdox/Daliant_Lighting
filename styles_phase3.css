@@ -842,3 +842,12 @@ header .nav-container {
 @media (min-width: 901px) {
   .contact-grid { grid-template-columns: 1.1fr 1fr; } /* left a hair wider */
 }
+
+/* Tighten space below Contact Us section */
+.contact-section {
+  padding-bottom: 2rem !important; /* smaller bottom padding */
+}
+.contact-section + .cta,
+.contact-section + footer {
+  margin-top: 0 !important; /* remove gap between sections */
+}
