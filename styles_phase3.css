@@ -851,3 +851,15 @@ header .nav-container {
 .contact-section + footer {
   margin-top: 0 !important; /* remove gap between sections */
 }
+
+/* Remove excessive bottom gap after Contact Us section */
+.contact-section {
+  padding-bottom: 0 !important; /* no extra padding below */
+  margin-bottom: 0 !important;  /* ensure no margin below */
+}
+.contact-section .fine-print {
+  margin-bottom: 0 !important;  /* remove gap from disclaimer text */
+}
+.contact-section + footer {
+  margin-top: 0 !important; /* footer hugs contact section */
+}
