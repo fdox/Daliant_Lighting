@@ -527,3 +527,67 @@ footer{ /* minimize generic footer rules; specific styles on .footer-main */ }
 .hidden{ display:none; }
 
 .btn-block{ display:block; width:100%; text-align:center; margin-top:.5rem; }
+
+/* =========================
+   Mobile Header Clean-up
+   ========================= */
+header .nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 20px;
+}
+
+.nav-primary ul,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.logo .logo-img,
+.logo-align .logo-img {
+  height: 34px;
+  width: auto;
+  display: block;
+}
+
+/* Hide large dropdown by default on touch */
+.nav-primary .dropdown { display: none; }
+
+/* --- Phones & small tablets --- */
+@media (max-width: 768px) {
+  header .nav-container {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 14px;
+  }
+
+  .logo,
+  .logo-align {
+    order: -1;               /* logo on top */
+    margin: 0 auto;
+  }
+
+  .nav-primary ul,
+  .nav-right {
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .nav-primary li { margin: 0; }
+  .nav-primary .dropdown { display: none !important; } /* disable mega menu */
+}
+
+/* --- Very small phones --- */
+@media (max-width: 420px) {
+  .nav-primary ul,
+  .nav-right { gap: 12px; font-size: 13px; }
+}
