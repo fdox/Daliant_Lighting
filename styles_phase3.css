@@ -720,3 +720,15 @@ header .nav-container {
 .how-it-works .btn {
   margin-top: 3rem; /* ~48px */
 }
+
+/* Align Smart Lighting Insights buttons horizontally with gap from text */
+.smart-lighting-insights .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.smart-lighting-insights .card .btn,
+.smart-lighting-insights .card button {
+  margin-top: 2rem; /* ~32px gap from text */
+  align-self: flex-start;
+}
