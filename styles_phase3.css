@@ -743,3 +743,15 @@ header .nav-container {
   align-self: flex-start;        /* keep button left-aligned inside card */
   padding-top: 0.75rem;          /* visual gap from paragraph above */
 }
+
+/* Blog preview: center buttons and match How It Works spacing */
+.blog-preview .cards .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center all content horizontally */
+  text-align: center;  /* center text too */
+}
+.blog-preview .cards .card .btn {
+  margin-top: 3rem;    /* match How It Works section gap */
+  align-self: center;  /* center the button in the flex column */
+}
