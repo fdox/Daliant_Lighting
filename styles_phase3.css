@@ -760,3 +760,25 @@ header .nav-container {
 .blog-preview .cards .card .btn {
   margin-top: 1.5rem !important;
 }
+
+/* How It Works: match 1.5rem gap */
+.how-it-works button,
+.how-it-works .btn {
+  margin-top: 1.5rem !important;
+}
+
+/* Blog preview: ensure all card buttons align horizontally */
+.blog-preview .cards {
+  display: flex;
+  align-items: stretch; /* make all cards equal height */
+}
+.blog-preview .cards .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1; /* equal width and height for all cards */
+}
+.blog-preview .cards .card .btn {
+  margin-top: auto; /* push buttons to bottom evenly */
+}
