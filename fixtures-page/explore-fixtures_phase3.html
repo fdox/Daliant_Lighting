@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Explore Fixtures | Daliant Lighting</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="canonical" href="https://yourdomain.com/explore-fixtures_phase3.html"/>
+<meta property="og:site_name" content="Daliant Lighting"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="stylesheet" href="styles_phase3.css"/>
+</head>
+<body>
+<header>
+<div class="nav-container header-flex">
+<nav class="nav-primary" aria-label="Primary">
+<ul>
+<li><a href="explore-fixtures_phase3.html">Explore Fixtures</a>
+<div class="dropdown">
+<div class="dropdown-column">
+<h4>Indoor Fixtures</h4>
+<a href="#">Recessed</a>
+<a href="#">Pendants</a>
+<a href="#">Chandeliers</a>
+<a href="#">Lamps</a>
+<a href="#">Sconces</a>
+<a href="#">All Fixtures</a>
+</div>
+<div class="dropdown-column">
+<h4>Outdoor Fixtures</h4>
+<a href="#">Wall Lighting</a>
+<a href="#">Overhead Lighting</a>
+</div>
+</div>
+</li>
+<li><a href="#">About</a></li>
+<li><a href="#">Blog</a></li>
+</ul>
+</nav>
+<div class="logo logo-align">
+<a href="index_builder_png_phase3.html"><img alt="Daliant Lighting Logo" class="logo-img" src="images/daliant-logo-cropped.png"/></a>
+</div>
+<div class="nav-right nav-flex"><a href="#">Search</a><a href="#">Log In</a><a href="#">Contact</a></div>
+</div>
+</header>
+
+<section class="fixtures-landing">
+  <div class="container text-center">
+    <h1>Explore Fixtures</h1>
+    <p class="subtitle">Find your perfect DALI-compatible lighting fixture.</p>
+    <nav class="tabs" aria-label="Fixture category">
+      <button class="tab active" data-tab="outdoor" type="button">Outdoor Lighting</button>
+      <button class="tab" data-tab="indoor" type="button">Indoor Lighting</button>
+    </nav>
+
+    <div class="subfilters">
+      <div class="filters" id="filters-outdoor">
+        <button class="filter-btn" data-filter="wall" type="button">Wall Lighting</button>
+        <button class="filter-btn" data-filter="overhead" type="button">Overhead Lighting</button>
+      </div>
+      <div class="filters hidden" id="filters-indoor">
+        <button class="filter-btn" data-filter="chandeliers" type="button">Chandeliers</button>
+        <button class="filter-btn" data-filter="pendants" type="button">Pendants</button>
+        <button class="filter-btn" data-filter="walllights" type="button">Wall Lights</button>
+        <button class="filter-btn" data-filter="lamps" type="button">Lamps</button>
+        <button class="filter-btn" data-filter="recessed" type="button">Recessed</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<main class="container">
+  <div id="product-grid" class="product-grid">
+<div class="card" data-location="outdoor" data-type="wall">
+  <a class="card-media" href="fixture-mira.html">
+    <img class="img-off" src="images/mira-off.png" alt="Mira Off" loading="lazy" decoding="async"/>
+    <img class="img-on" src="images/mira-on.png" alt="Mira On" loading="lazy" decoding="async"/>
+  </a>
+  <h3 class="card-title"><a href="fixture-mira.html">Mira</a></h3>
+</div>
+<div class="card" data-location="indoor" data-type="pendants">
+  <a class="card-media" href="fixture-aven.html">
+    <img class="img-off" src="images/aven-off.jpg" alt="Aven Off" loading="lazy" decoding="async"/>
+    <img class="img-on" src="images/aven-on.jpg" alt="Aven On" loading="lazy" decoding="async"/>
+  </a>
+  <h3 class="card-title"><a href="fixture-aven.html">Aven</a></h3>
+</div>
+  </div>
+</main>
+
+<footer class="footer-main">
+<div class="container footer-grid">
+<div>
+<h4 class="footer-heading">RESOURCES</h4>
+<p><a href="#">Terms &amp; Conditions</a></p>
+<p><a href="#">FAQs</a></p>
+<p><a href="#">Product Resources</a></p>
+<p><a href="#">Downloads</a></p>
+<p><a href="#">Warranty</a></p>
+</div>
+<div>
+<h4 class="footer-heading">COMPANY</h4>
+<p><a href="#">About Us</a></p>
+<p><a href="#">Contact Us</a></p>
+<p><a href="#">Shipping &amp; Delivery</a></p>
+<p><a href="#">Join Our Team</a></p>
+</div>
+<div>
+<h4 class="footer-heading">FOR LIGHTING PRO</h4>
+<p><a href="#">Manage Account</a></p>
+<p><a href="#">Request an Account</a></p>
+<p><a href="#">My Orders</a></p>
+<p><a href="#">Partner Insights</a></p>
+</div>
+<div>
+<h4 class="footer-heading">SOCIAL</h4>
+<p><a href="#">Instagram</a></p>
+<p><a href="#">Facebook</a></p>
+<p><a href="#">Pinterest</a></p>
+<p><a href="#">X</a></p>
+</div>
+</div>
+<div style="text-align: center; margin-top: 2rem; color: #444; font-size: 0.8rem;">
+<p>© 2025 Daliant Lighting. All rights reserved.</p>
+</div>
+</footer>
+
+<script>
+(function(){
+  const tabs = document.querySelectorAll('.tabs .tab');
+  const filtersOutdoor = document.getElementById('filters-outdoor');
+  const filtersIndoor = document.getElementById('filters-indoor');
+  const cards = Array.from(document.querySelectorAll('.product-grid .card'));
+  let currentLocation = 'outdoor';
+
+  function setActiveTab(tabName){
+    tabs.forEach(t=>t.classList.toggle('active', t.dataset.tab===tabName));
+    filtersOutdoor.classList.toggle('hidden', tabName!=='outdoor');
+    filtersIndoor.classList.toggle('hidden', tabName!=='indoor');
+    currentLocation = tabName;
+    applyFilter(null);
+  }
+
+  function applyFilter(subtype){
+    cards.forEach(card=>{
+      const matchesLocation = card.dataset.location === currentLocation;
+      const matchesType = !subtype || card.dataset.type === subtype;
+      card.style.display = (matchesLocation && matchesType) ? '' : 'none';
+    });
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    if(subtype){
+      const btn = document.querySelector('.filter-btn[data-filter="'+subtype+'"]');
+      if(btn) btn.classList.add('active');
+    }
+  }
+
+  document.addEventListener('click', (e)=>{
+    const t = e.target;
+    if(t.classList.contains('tab')){
+      setActiveTab(t.dataset.tab);
+    }
+    if(t.classList.contains('filter-btn')){
+      applyFilter(t.dataset.filter);
+    }
+  });
+
+  setActiveTab('outdoor');
+})();
+</script>
+
+</body>
+</html>
