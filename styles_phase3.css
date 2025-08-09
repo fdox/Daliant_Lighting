@@ -732,3 +732,14 @@ header .nav-container {
   margin-top: 2rem; /* ~32px gap from text */
   align-self: flex-start;
 }
+
+/* Smart Lighting Insights: align buttons & add gap */
+.blog-preview .cards .card {
+  display: flex;
+  flex-direction: column;        /* stack title, text, button */
+}
+.blog-preview .cards .card .btn {
+  margin-top: auto;              /* push button to bottom for alignment */
+  align-self: flex-start;        /* keep button left-aligned inside card */
+  padding-top: 0.75rem;          /* visual gap from paragraph above */
+}
