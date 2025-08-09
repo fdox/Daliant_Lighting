@@ -1,0 +1,58 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare dist and prefix root paths for project site
+        shell: bash
+        run: |
+          set -euo pipefail
+          REPO_NAME="Daliant_Lighting"
+          mkdir -p dist
+          rsync -a --exclude '.git' --exclude 'dist' ./ dist/
+
+          shopt -s globstar nullglob
+          for f in dist/**/*.html dist/*.html; do
+            # 1) Prefix href="/X" -> href="/REPO_NAME/X" (avoid protocol-relative //)
+            sed -r -i 's|href="/([^/])|href="/'${REPO_NAME}'/\1|g' "$f"
+            # 2) Prefix src="/X"  -> src="/REPO_NAME/X" (avoid protocol-relative //)
+            sed -r -i 's|src="/([^/])|src="/'${REPO_NAME}'/\1|g' "$f"
+            # 3) Home logo/link: href="/" -> href="/REPO_NAME/"
+            sed -i 's|href="/"|href="/'${REPO_NAME}'/"|g' "$f"
+          done
+
+          # Ensure GitHub Pages doesn't run Jekyll
+          touch dist/.nojekyll
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
