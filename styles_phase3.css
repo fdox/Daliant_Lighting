@@ -702,3 +702,9 @@ header .nav-container {
 
   html.no-scroll, body.no-scroll { overflow: hidden; }
 }
+
+/* Increase gap above How It Works buttons (desktop + mobile) */
+.how-it-works .btn-row,
+.how-it-works .cta-row {
+  margin-top: 1.5rem; /* ~24px */
+}
