@@ -708,3 +708,9 @@ header .nav-container {
 .how-it-works .cta-row {
   margin-top: 1.5rem; /* ~24px */
 }
+
+/* Increase gap above How It Works buttons further */
+.how-it-works .btn-row,
+.how-it-works .cta-row {
+  margin-top: 2.5rem; /* ~40px */
+}
