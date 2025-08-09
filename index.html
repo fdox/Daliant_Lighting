@@ -145,6 +145,58 @@
 <button>Contact Us</button>
 </div>
 </section>
+<section class="contact-section">
+  <div class="container contact-grid">
+    <div class="contact-left">
+      <h2>Contact Us</h2>
+      <p>For assistance with product inquiries or placing an order, please call our Product Specialists at:</p>
+      <p class="big">Toll-Free <strong>1-888-988-4317</strong></p>
+      <p>Available Monday to Friday, 9:00 AM – 8:00 PM EST.</p>
+      <p>For inquiries related to an existing order or technical support, please review the options below and submit the form, and our Client Care Specialists will be happy to assist you.</p>
+      <div class="map-wrap">
+        <iframe title="Queen Creek, AZ" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Queen+Creek+AZ&output=embed"></iframe>
+      </div>
+    </div>
+
+    <div class="contact-right">
+      <form class="contact-form" action="#" method="post" novalidate>
+        <div class="form-row two-col">
+          <div class="field">
+            <label for="fullName">Full name <span class="req">*</span></label>
+            <input id="fullName" name="fullName" type="text" placeholder="Your name" required>
+          </div>
+          <div class="field">
+            <label for="email">Email <span class="req">*</span></label>
+            <input id="email" name="email" type="email" placeholder="your@email.com" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="subject">Subject <span class="req">*</span></label>
+          <select id="subject" name="subject" required>
+            <option value="" selected disabled>Select a subject</option>
+            <option>Product Inquiry</option>
+            <option>Place an Order</option>
+            <option>Existing Order</option>
+            <option>Technical Support</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="message">Message <span class="req">*</span></label>
+          <textarea id="message" name="message" rows="6" placeholder="How can we help?" required></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Send</button>
+        </div>
+        <p class="fine-print">This site is protected by reCAPTCHA Enterprise and the Google Privacy Policy and Terms of Service apply.</p>
+      </form>
+    </div>
+  </div>
+</section>
 <footer class="footer-main">
 <div class="container footer-grid">
 <div>
