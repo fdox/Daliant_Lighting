@@ -714,3 +714,9 @@ header .nav-container {
 .how-it-works .cta-row {
   margin-top: 2.5rem; /* ~40px */
 }
+
+/* Increase gap above How It Works buttons (direct targeting) */
+.how-it-works button,
+.how-it-works .btn {
+  margin-top: 3rem; /* ~48px */
+}
