@@ -14,9 +14,10 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 </head>
-<body>
+<body class="page-home page-home">
 <header>
 <div class="nav-container header-flex">
+  <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenuHome">☰</button>
 <nav class="nav-primary" aria-label="Primary">
 <ul>
 <li><a href="fixtures-page/explore-fixtures.html">Explore Fixtures</a>
@@ -45,8 +46,12 @@
 <a href="index_builder_png_phase3.html"><a href="index.html"><img alt="Daliant Lighting Logo" class="logo-img" src="images/daliant-logo-cropped.png"/></a></a>
 </div>
 <div class="nav-right nav-flex"><a href="#">Search</a><a href="#">Log In</a><a href="#">Contact</a></div>
+  <button class="search-btn" aria-label="Search">⌕</button>
 </div>
 </header>
+
+<div id="mobileMenuHome" aria-hidden="true"></div>
+
 <!-- Existing homepage content follows unchanged... -->
 <section class="hero">
 <div class="container">
@@ -181,5 +186,6 @@
 <p>© 2025 Daliant Lighting. All rights reserved.</p>
 </div>
 </footer>
+  <script src="scripts/mobile-nav-home.js" defer></script>
 </body>
 </html>
