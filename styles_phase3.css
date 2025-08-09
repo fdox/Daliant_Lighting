@@ -755,3 +755,8 @@ header .nav-container {
   margin-top: 3rem;    /* match How It Works section gap */
   align-self: center;  /* center the button in the flex column */
 }
+
+/* Blog preview: reduce top margin on buttons */
+.blog-preview .cards .card .btn {
+  margin-top: 1.5rem !important;
+}
