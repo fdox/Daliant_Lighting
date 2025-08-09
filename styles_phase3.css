@@ -527,6 +527,7 @@ footer{ /* minimize generic footer rules; specific styles on .footer-main */ }
 .hidden{ display:none; }
 
 .btn-block{ display:block; width:100%; text-align:center; margin-top:.5rem; }
+<<<<<<< HEAD
 
 /* =========================
    Mobile Header Clean-up
@@ -647,3 +648,5 @@ header .nav-container {
 
   html.no-scroll, body.no-scroll { overflow: hidden; }
 }
+=======
+>>>>>>> parent of 4f4b95a (Mobile header cleanup + Explore page header/logo + Mira/Aven links normalized)
