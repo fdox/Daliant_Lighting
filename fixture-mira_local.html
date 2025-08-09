@@ -8,14 +8,14 @@
 <link rel="canonical" href="https://fdox.github.io/fixtures-page/fixture-mira.html"/>
 <meta property="og:site_name" content="Daliant Lighting"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<link rel="stylesheet" href="/styles_phase3.css"/>
+<link rel="stylesheet" href="styles_phase3.css"/>
 </head>
 <body>
 <header>
 <div class="nav-container header-flex">
 <nav class="nav-primary" aria-label="Primary">
 <ul>
-<li><a href="/fixtures-page/explore-fixtures.html">Explore Fixtures</a>
+<li><a href="fixtures-page/explore-fixtures_phase3.html">Explore Fixtures</a>
 <div class="dropdown">
 <div class="dropdown-column">
 <h4>Indoor Fixtures</h4>
@@ -38,7 +38,7 @@
 </ul>
 </nav>
 <div class="logo logo-align">
-<a href="/"><img alt="Daliant Lighting Logo" class="logo-img" src="/images/daliant-logo-cropped.png"/></a>
+<a href="index_builder_png_phase3.html"><img alt="Daliant Lighting Logo" class="logo-img" src="images/daliant-logo-cropped.png"/></a>
 </div>
 <div class="nav-right nav-flex"><a href="#">Search</a><a href="#">Log In</a><a href="#">Contact</a></div>
 </div>
@@ -47,12 +47,12 @@
 <main class="container product-detail">
   <section class="gallery">
     <div class="gallery-stage">
-      <img id="currentImage" src="/images/mira-1.png" alt="Mira main image" decoding="async"/>
+      <img id="currentImage" src="images/mira-1.png" alt="Mira main image" decoding="async"/>
       <button id="prevBtn" class="gallery-arrow gallery-arrow-left" type="button" aria-label="Previous image">‹</button>
       <button id="nextBtn" class="gallery-arrow gallery-arrow-right" type="button" aria-label="Next image">›</button>
     </div>
     <div class="thumbs" role="list" aria-label="Image thumbnails">
-      <img src="/images/mira-1.png" data-index="0" alt="Mira thumb 1" loading="lazy" decoding="async"/><img src="/images/mira-1.png" data-index="1" alt="Mira thumb 2" loading="lazy" decoding="async"/><img src="/images/mira-2.png" data-index="2" alt="Mira thumb 3" loading="lazy" decoding="async"/><img src="/images/mira-3.png" data-index="3" alt="Mira thumb 4" loading="lazy" decoding="async"/><img src="/images/mira-4.png" data-index="4" alt="Mira thumb 5" loading="lazy" decoding="async"/><img src="/images/mira-1.png" data-index="5" alt="Mira thumb 6" loading="lazy" decoding="async"/><img src="/images/mira-2.png" data-index="6" alt="Mira thumb 7" loading="lazy" decoding="async"/><img src="/images/mira-3.png" data-index="7" alt="Mira thumb 8" loading="lazy" decoding="async"/><img src="/images/mira-4.png" data-index="8" alt="Mira thumb 9" loading="lazy" decoding="async"/>
+      <img src="images/mira-1.png" data-index="0" alt="Mira thumb 1" loading="lazy" decoding="async"/><img src="images/mira-1.png" data-index="1" alt="Mira thumb 2" loading="lazy" decoding="async"/><img src="images/mira-2.png" data-index="2" alt="Mira thumb 3" loading="lazy" decoding="async"/><img src="images/mira-3.png" data-index="3" alt="Mira thumb 4" loading="lazy" decoding="async"/><img src="images/mira-4.png" data-index="4" alt="Mira thumb 5" loading="lazy" decoding="async"/><img src="images/mira-1.png" data-index="5" alt="Mira thumb 6" loading="lazy" decoding="async"/><img src="images/mira-2.png" data-index="6" alt="Mira thumb 7" loading="lazy" decoding="async"/><img src="images/mira-3.png" data-index="7" alt="Mira thumb 8" loading="lazy" decoding="async"/><img src="images/mira-4.png" data-index="8" alt="Mira thumb 9" loading="lazy" decoding="async"/>
     </div>
   </section>
 
@@ -170,7 +170,7 @@
   const thumbs = Array.from(document.querySelectorAll('.thumbs img'));
 
   function updateImage() {
-    currentImage.src = '/' + images[currentIndex];
+    currentImage.src = images[currentIndex];
     thumbs.forEach((t,i)=> t.classList.toggle('is-active', i===currentIndex));
   }
   document.getElementById('prevBtn').addEventListener('click', ()=>{ currentIndex = (currentIndex - 1 + images.length) % images.length; updateImage(); });
