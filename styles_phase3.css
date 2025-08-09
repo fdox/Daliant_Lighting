@@ -782,3 +782,18 @@ header .nav-container {
 .blog-preview .cards .card .btn {
   margin-top: auto; /* push buttons to bottom evenly */
 }
+
+/* Blog preview: equal card height for button alignment */
+.blog-preview .cards {
+  display: flex;
+  align-items: stretch; /* same height for all cards */
+}
+.blog-preview .cards .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* space out text and button */
+}
+.blog-preview .cards .card .btn {
+  margin-top: auto; /* push button to bottom */
+  align-self: center; /* center button horizontally */
+}
