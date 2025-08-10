@@ -1301,3 +1301,18 @@ header{
   -webkit-backdrop-filter: saturate(160%) blur(6px);
   backdrop-filter: saturate(160%) blur(6px);
 }
+
+/* ===== Sticky header override (wins over older rules) ===== */
+header.has-hamburger-injected,
+header {
+  position: -webkit-sticky !important; /* iOS Safari */
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1005 !important;
+}
+
+/* Ensure the inner container is the positioning context for the icons */
+header .nav-container,
+header .header-flex {
+  position: relative !important;
+}
