@@ -1,129 +1,151 @@
-// DEBUG-VISIBLE mobile nav (top-left). Shows even if CSS fails.
+/* =========================================================================
+   Mobile header (production):
+   - Left: borderless "hamburger" (top-left, floating)
+   - Center: logo (your existing markup)
+   - Right: login icon (links to existing "Log In" href if present)
+   - Slide-over panel with: Explore Fixtures, About, Blog, Search, Contact
+   - A11y: role=dialog, aria-modal, aria-hidden, focus trap, Esc/overlay close
+   ======================================================================= */
 (function () {
   function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  function q(sel,root){ return (root||document).querySelector(sel); }
+  function qa(sel,root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+  function norm(s){ return (s||'').toLowerCase().replace(/\s+/g,' ').trim(); }
+
   ready(function(){
     var d=document, b=d.body;
-    var header = d.querySelector('header') || d.querySelector('.site-header') || b;
+    var header = q('header') || b;
+    var headerBox = q('.nav-container', header) || q('.header-flex', header) || header;
 
-    // Panel (create if missing)
-    var panel = d.querySelector('[data-mobile-nav-panel]') ||
-                d.querySelector('.mobile-nav-panel') ||
-                d.querySelector('#mobileNav');
-    if (!panel) {
-      panel = d.createElement('aside');
-      panel.className = 'mobile-nav-panel';
-      panel.setAttribute('data-mobile-nav-panel','');
-      var desktopList = d.querySelector('nav ul, .site-nav ul, .main-nav ul, .nav ul');
-      if (desktopList) {
-        var wrap = d.createElement('nav');
-        wrap.className = 'mobile-nav-clone';
-        wrap.appendChild(desktopList.cloneNode(true));
-        panel.appendChild(wrap);
-      }
-      b.appendChild(panel);
-    }
-    panel.setAttribute('role','dialog');
-    panel.setAttribute('aria-modal','true');
-    if (!panel.hasAttribute('aria-hidden')) panel.setAttribute('aria-hidden','true');
-    if (!panel.id) panel.id = 'mobile-nav-panel';
-
-    // Toggle (inject if missing)
-    var toggle = d.querySelector('[data-mobile-nav-toggle], .mobile-nav-toggle, #mobileMenuButton, .hamburger, .hamburger-btn');
-    if (!toggle) {
-      toggle = d.createElement('button');
-      toggle.type = 'button';
-      toggle.className = 'hamburger-btn';
-      toggle.setAttribute('aria-label','Menu');
-      toggle.innerHTML = '<span class="hamburger-box" aria-hidden="true">'
-        + '<span class="hamburger-line"></span>'
-        + '<span class="hamburger-line"></span>'
-        + '<span class="hamburger-line"></span>'
-        + '</span>';
-      if (header) {
-        if (getComputedStyle(header).position === 'static') header.style.position = 'relative';
-        header.insertBefore(toggle, header.firstChild); // TOP-LEFT
-        header.classList.add('has-hamburger-injected');
-      } else {
-        toggle.classList.add('hamburger-fixed');
-        b.appendChild(toggle);
-      }
-    }
-    if (!toggle.hasAttribute('aria-controls')) toggle.setAttribute('aria-controls', panel.id);
-    toggle.setAttribute('aria-expanded','false');
-
-    // Visible proof that the JS ran (auto-removes after 4s)
-    (function(){
-      var tag = d.createElement('div');
-      tag.textContent = 'nav-js ok';
-      tag.style.cssText = 'position:fixed;top:6px;right:6px;padding:2px 6px;font:11px/1 system-ui;background:#06c;color:#fff;z-index:100000;';
-      b.appendChild(tag);
-      setTimeout(function(){ tag.remove(); }, 4000);
-    })();
-
-    // Inline fallback styles so the button shows even if CSS is broken
-    function applyFallbackStyles(){
-      toggle.style.display   = 'inline-flex';
-      toggle.style.position  = header ? 'absolute' : 'fixed';
-      toggle.style.left      = '12px';
-      toggle.style.top       = '12px';
-      toggle.style.width     = '44px';
-      toggle.style.height    = '44px';
-      toggle.style.background= 'transparent';
-      toggle.style.border    = '1px solid currentColor';
-      toggle.style.borderRadius = '8px';
-      toggle.style.color     = '#111';
-      toggle.style.zIndex    = '10020';
-    }
-    function updateForViewport(){
-      if (window.innerWidth <= 1024) applyFallbackStyles();
-      else toggle.style.display = 'none';
-    }
-    updateForViewport();
-    window.addEventListener('resize', updateForViewport);
-
-    // Overlay (create if missing)
-    var overlay = d.querySelector('.mobile-nav-overlay, [data-mobile-nav-overlay]');
-    if (!overlay) {
+    // --- overlay ---
+    var overlay = q('.mobile-nav-overlay');
+    if (!overlay){
       overlay = d.createElement('div');
       overlay.className = 'mobile-nav-overlay';
       overlay.setAttribute('aria-hidden','true');
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:10010;';
       b.appendChild(overlay);
     }
 
-    // Open/close + focus trap
-    var focusableSel = 'a[href],area[href],input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),button:not([disabled]),[tabindex]:not([tabindex="-1"])';
-    var lastFocused=null;
-    function isOpen(){ return toggle.getAttribute('aria-expanded') === 'true'; }
+    // --- panel ---
+    var panel = q('[data-mobile-nav-panel]') || q('.mobile-nav-panel') || q('#mobile-nav-panel');
+    if (!panel){
+      panel = d.createElement('aside');
+      panel.className = 'mobile-nav-panel';
+      panel.id = 'mobile-nav-panel';
+      panel.setAttribute('data-mobile-nav-panel','');
+      panel.setAttribute('aria-hidden','true');
+      header.parentNode.insertBefore(panel, header.nextSibling);
+    }
+    panel.setAttribute('role','dialog');
+    panel.setAttribute('aria-modal','true');
+
+    // Build menu from existing anchors in preferred order
+    var desired = ['Explore Fixtures','About','Blog','Search','Contact'];
+    var anchors = qa('nav a, .nav-right a');
+    function hrefFor(label){
+      var L = norm(label);
+      for (var i=0;i<anchors.length;i++){
+        if (norm(anchors[i].textContent) === L) return anchors[i].getAttribute('href') || '#';
+      }
+      return '#';
+    }
+    var navWrap = q('nav', panel) || (function(){
+      var w = d.createElement('nav'); panel.innerHTML=''; panel.appendChild(w); return w;
+    })();
+    var ul = q('ul', navWrap);
+    if (!ul){ ul = d.createElement('ul'); ul.style.listStyle='none'; ul.style.margin='0'; ul.style.padding='0'; navWrap.appendChild(ul); }
+    ul.innerHTML = '';
+    desired.forEach(function(label){
+      var li = d.createElement('li');
+      var a = d.createElement('a');
+      a.textContent = label;
+      a.href = hrefFor(label);
+      a.setAttribute('role','menuitem');
+      a.style.display = 'block';
+      a.style.padding = '10px 6px';
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+
+    // --- hamburger (left, borderless) ---
+    var burger = q('.hamburger-btn');
+    if (!burger){
+      burger = d.createElement('button');
+      burger.type = 'button';
+      burger.className = 'hamburger-btn';
+      burger.setAttribute('aria-label','Open menu');
+      burger.setAttribute('aria-expanded','false');
+      burger.setAttribute('aria-controls', panel.id || 'mobile-nav-panel');
+      burger.innerHTML = '<span class="hamburger-lines" aria-hidden="true"><span></span><span></span><span></span></span>';
+      if (getComputedStyle(headerBox).position === 'static') headerBox.style.position = 'relative';
+      headerBox.insertBefore(burger, headerBox.firstChild);
+      header.classList.add('has-hamburger-injected');
+    }
+
+    // --- login icon (right) ---
+    var loginHref = (function(){
+      for (var i=0;i<anchors.length;i++){
+        var t = norm(anchors[i].textContent);
+        if (t==='log in' || t==='login' || t==='sign in'){ return anchors[i].getAttribute('href') || '#'; }
+      }
+      return '#';
+    })();
+    var login = q('.login-icon-btn', headerBox);
+    if (!login){
+      login = d.createElement('a');
+      login.className = 'icon-btn login-icon-btn';
+      login.href = loginHref;
+      login.setAttribute('aria-label','Log in');
+      login.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4 0-7 2-7 4.5V21h14v-2.5C19 16 16 14 12 14z"/></svg>';
+      headerBox.appendChild(login);
+    }
+
+    // --- behavior (+ focus trap) ---
+    function isOpen(){ return burger.getAttribute('aria-expanded')==='true'; }
+    function firstFocusable(){
+      return q('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])', panel);
+    }
+    function trapTab(e){
+      if (e.key!=='Tab') return;
+      var focusables = qa('a,button,input,select,textarea,[tabindex]:not([tabindex="-1"])', panel);
+      if (!focusables.length) return;
+      var first = focusables[0], last = focusables[focusables.length-1];
+      if (e.shiftKey && d.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && d.activeElement===last){ e.preventDefault(); first.focus(); }
+    }
     function open(){
-      lastFocused = d.activeElement;
-      toggle.setAttribute('aria-expanded','true');
+      burger.setAttribute('aria-expanded','true');
+      burger.classList.add('is-open');
       panel.setAttribute('aria-hidden','false');
+      overlay.classList.add('is-active');
       b.classList.add('no-scroll');
-      overlay.style.opacity='1'; overlay.style.pointerEvents='auto';
-      var f = panel.querySelectorAll(focusableSel); if (f.length) f[0].focus();
+      var f = firstFocusable(); if (f) f.focus();
       d.addEventListener('keydown', onKeydown);
     }
     function close(){
-      toggle.setAttribute('aria-expanded','false');
+      burger.setAttribute('aria-expanded','false');
+      burger.classList.remove('is-open');
       panel.setAttribute('aria-hidden','true');
+      overlay.classList.remove('is-active');
       b.classList.remove('no-scroll');
-      overlay.style.opacity='0'; overlay.style.pointerEvents='none';
       d.removeEventListener('keydown', onKeydown);
-      if (typeof toggle.focus === 'function') toggle.focus();
+      if (typeof burger.focus==='function') burger.focus();
     }
     function onKeydown(e){
-      if (e.key === 'Escape' || e.key === 'Esc'){ if (isOpen()) { e.preventDefault(); close(); } return; }
-      if (e.key === 'Tab'){
-        var f = panel.querySelectorAll(focusableSel);
-        if (!f.length) return;
-        var first=f[0], last=f[f.length-1];
-        if (e.shiftKey && d.activeElement===first){ e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && d.activeElement===last){ e.preventDefault(); first.focus(); }
-      }
+      if (e.key==='Escape' || e.key==='Esc'){ if (isOpen()) { e.preventDefault(); close(); } return; }
+      trapTab(e);
     }
-    toggle.addEventListener('click', function(){ isOpen() ? close() : open(); });
+    burger.addEventListener('click', function(){ isOpen()? close(): open(); });
     overlay.addEventListener('click', function(){ if (isOpen()) close(); });
 
+    // Close when switching breakpoints
+    var lastW = window.innerWidth;
+    window.addEventListener('resize', function(){
+      var now = window.innerWidth;
+      if ((lastW < 1024 && now >= 1024) || (lastW >= 1024 && now < 1024)){
+        if (isOpen()) close();
+      }
+      lastW = now;
+    });
   });
 })();
