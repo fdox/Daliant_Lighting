@@ -1139,3 +1139,52 @@ body.no-scroll { overflow: hidden !important; }
 @media (min-width: 1024px){
   .login-icon-btn.login-mobile-only{ display: none !important; }
 }
+
+/* ===== Header: Search control (desktop) ===== */
+.search-control{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-direction: row-reverse;            /* icon on the RIGHT, input expands LEFT */
+  position: relative;
+}
+.search-toggle.icon-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  color: #111 !important;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.search-input{
+  width: 0;
+  opacity: 0;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font: 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  transition: width .18s ease, opacity .18s ease, margin .18s ease;
+  margin-right: 0;
+}
+.search-control.is-open .search-input{
+  width: 180px;           /* expands left due to row-reverse */
+  opacity: 1;
+}
+
+/* Icons unified color */
+.icon-btn.login-icon-btn{ color: #111 !important; }
+
+/* Hide the desktop search control + desktop login icon on mobile;
+   show the mobile login clone pinned top-right (already styled earlier) */
+@media (max-width: 1023.98px){
+  .search-control{ display: none !important; }
+  .nav-right .login-icon-btn{ display: none !important; }
+  .login-icon-btn.login-mobile-only{
+    display: inline-flex !important;
+    position: absolute !important;
+    right: 12px !important; top: 12px !important;
+    z-index: 1002 !important;
+  }
+}
