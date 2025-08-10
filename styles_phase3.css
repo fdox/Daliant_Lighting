@@ -863,3 +863,12 @@ header .nav-container {
 .contact-section + footer {
   margin-top: 0 !important; /* footer hugs contact section */
 }
+
+/* Test: remove gap under Contact Us section */
+.contact-section {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+.contact-section + footer {
+  margin-top: 0 !important;
+}
