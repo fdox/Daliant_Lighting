@@ -1257,3 +1257,47 @@ body.no-scroll { overflow: hidden !important; }
     padding-right: 36px; /* space so text doesn't overlap the icon */
   }
 }
+
+/* === Fix: desktop search pill is always visible (and keeps black icon) === */
+@media (min-width: 1024px){
+  .nav-right{ display: flex !important; align-items: center !important; gap: 16px !important; }
+
+  .nav-right .search-input{
+    opacity: 1 !important;
+    width: 120px !important;                  /* default width */
+    color: #111 !important;
+    background-color: rgba(255,255,255,.85) !important;
+    border: 1px solid rgba(17,17,17,.28) !important;
+    border-radius: 999px !important;
+    padding: 8px 12px !important;
+    margin-left: auto !important;             /* expands to the LEFT */
+    outline: none !important;
+    -webkit-appearance: none; appearance: none;
+    caret-color: #111;
+
+    /* decorative black magnifier on the RIGHT */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 10px center !important;
+    background-size: 18px 18px !important;
+    padding-right: 36px !important;           /* keep text off the icon */
+    -webkit-backdrop-filter: saturate(160%) blur(6px);
+    backdrop-filter: saturate(160%) blur(6px);
+  }
+  .nav-right .search-input::placeholder{ color: rgba(17,17,17,.55) !important; }
+  .nav-right .search-input:focus, .nav-right .search-input:focus-visible{
+    width: 220px !important;                  /* expand LEFT */
+    border-color: #111 !important;
+    box-shadow: 0 0 0 1.5px #111, 0 2px 10px rgba(0,0,0,.05) !important;
+  }
+  .nav-right .search-input::-webkit-search-decoration,
+  .nav-right .search-input::-webkit-search-cancel-button{ -webkit-appearance: none; }
+}
+
+/* === Sticky header on scroll (both desktop and mobile) === */
+header{
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(255,255,255,.95);          /* light, on-brand glass */
+  -webkit-backdrop-filter: saturate(160%) blur(6px);
+  backdrop-filter: saturate(160%) blur(6px);
+}
