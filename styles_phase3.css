@@ -881,3 +881,73 @@ body.no-scroll { overflow: hidden !important; }
 @media (prefers-reduced-motion: reduce) {
   .mobile-nav-panel, .mobile-nav-overlay { transition: none !important; }
 }
+
+/* ===== Hamburger button (visible on mobile only) ===== */
+.hamburger-btn {
+  display: none; /* default hidden, shown via media query */
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  background: transparent;
+  color: #111; /* fallback; inherits if header sets a color */
+  cursor: pointer;
+  z-index: 1002;
+}
+.hamburger-btn .hamburger-box { display: inline-block; line-height: 0; }
+.hamburger-btn .hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin: 4px 0;
+  background: currentColor;
+  border-radius: 2px;
+}
+
+/* Position inside header when injected there */
+header.has-hamburger-injected { position: relative; }
+header.has-hamburger-injected .hamburger-btn {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+}
+
+/* Fallback fixed-position if no header is found */
+.hamburger-fixed { position: fixed; left: 12px; top: 12px; }
+
+/* Show on mobile, hide on desktop */
+@media (max-width: 1023.98px) {
+  .hamburger-btn { display: inline-flex; }
+  /* If an existing toggle element is present, ensure it's not accidentally hidden */
+  [data-mobile-nav-toggle], .mobile-nav-toggle, #mobileMenuButton, .hamburger {
+    display: inline-flex !important;
+  }
+}
+@media (min-width: 1024px) {
+  .hamburger-btn,
+  [data-mobile-nav-toggle], .mobile-nav-toggle, #mobileMenuButton, .hamburger {
+    display: none !important;
+  }
+}
+
+/* Overlay (if we auto-create one) */
+.mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+  z-index: 1001;
+}
+.mobile-nav-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Honor reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-overlay { transition: none !important; }
+}

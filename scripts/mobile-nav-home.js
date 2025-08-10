@@ -1,143 +1,145 @@
-// Homepage mobile menu (scoped to #mobileMenuHome)
-(function(){
-  function qs(sel, root){ return (root||document).querySelector(sel); }
-  const container = qs('header .nav-container, header .header-flex, header .nav wrap');
-  if(!container) return;
-
-  const burger = qs('.hamburger', container);
-  const searchBtn = qs('.search-btn', container);
-  let panel = qs('#mobileMenuHome');
-  if(!panel) return;
-
-  if(!panel.dataset.built){
-    const wrap = document.createElement('div');
-    wrap.className = 'mobile-menu-inner';
-    const primary = qs('.nav-primary ul');
-    const right = qs('.nav-right');
-
-    if(primary){
-      const h = document.createElement('h4'); h.textContent = 'Menu';
-      wrap.appendChild(h);
-      wrap.appendChild(primary.cloneNode(true));
-    }
-    if(right){
-      const h2 = document.createElement('h4'); h2.textContent = 'Quick Links';
-      wrap.appendChild(h2);
-      // Convert links to a vertical list
-      const ul = document.createElement('ul');
-      right.querySelectorAll('a').forEach(a=>{
-        const li = document.createElement('li'); const c=a.cloneNode(true);
-        li.appendChild(c); ul.appendChild(li);
-      });
-      wrap.appendChild(ul);
-    }
-    panel.appendChild(wrap);
-    panel.dataset.built = '1';
-  }
-
-  function toggle(open){
-    const isOpen = open!=null ? open : !panel.classList.contains('open');
-    panel.classList.toggle('open', isOpen);
-    burger?.setAttribute('aria-expanded', String(isOpen));
-    document.documentElement.classList.toggle('no-scroll', isOpen);
-  }
-
-  burger?.addEventListener('click', ()=>toggle());
-  panel.addEventListener('click', (e)=>{ if(e.target===panel) toggle(false); });
-  searchBtn?.addEventListener('click', ()=>{ window.location.href = '#'; });
-})();
-
-/* ========= A11Y PATCH: mobile menu (dialog semantics + focus trap) =========
-   - Watches the hamburger's aria-expanded, so it won't conflict with existing JS
-   - Applies role="dialog" aria-modal, toggles aria-hidden on the panel
-   - Traps focus while open, Esc closes (by "clicking" the toggle)
-   - Restores focus to the hamburger on close
-   - If an overlay exists (.mobile-nav-overlay or [data-mobile-nav-overlay]), clicking it closes
-============================================================================= */
+/* =========================================================================
+   Mobile menu: visible on mobile + a11y (dialog, focus trap, Esc)
+   - Ensures a hamburger toggle exists and is VISIBLE on mobile only
+   - If no toggle is found, injects one into <header> (or fixed to body)
+   - Works with an existing panel: [data-mobile-nav-panel], .mobile-nav-panel, #mobileNav
+   - Toggles aria-expanded on the button, aria-hidden on the panel, and body.no-scroll
+   - Focus trap + Esc close + overlay click close
+   ======================================================================= */
 (function () {
-  var toggle =
-    document.querySelector('[data-mobile-nav-toggle]') ||
-    document.querySelector('.mobile-nav-toggle') ||
-    document.querySelector('#mobileMenuButton') ||
-    document.querySelector('.hamburger') ||
-    document.querySelector('[aria-label*="menu" i]');
+  function ready(fn){ if(document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  ready(function(){
+    var doc = document;
+    var body = doc.body;
 
-  if (!toggle) { console.warn('[mobile a11y] No mobile menu toggle found.'); return; }
+    // Resolve (or create) the panel
+    var panel = doc.querySelector('[data-mobile-nav-panel]') ||
+                doc.querySelector('.mobile-nav-panel') ||
+                doc.querySelector('#mobileNav');
 
-  function resolvePanel() {
-    var id = toggle.getAttribute('aria-controls');
-    return (id && document.getElementById(id)) ||
-           document.querySelector('[data-mobile-nav-panel]') ||
-           document.querySelector('.mobile-nav-panel') ||
-           document.querySelector('#mobileNav');
-  }
-
-  var panel = resolvePanel();
-  if (!panel) { console.warn('[mobile a11y] No mobile menu panel found.'); return; }
-
-  panel.setAttribute('role', 'dialog');
-  panel.setAttribute('aria-modal', 'true');
-  if (!panel.hasAttribute('aria-hidden')) panel.setAttribute('aria-hidden', 'true');
-
-  if (!toggle.hasAttribute('aria-controls')) {
-    if (!panel.id) panel.id = 'mobile-nav-panel';
-    toggle.setAttribute('aria-controls', panel.id);
-  }
-  if (!toggle.hasAttribute('aria-expanded')) toggle.setAttribute('aria-expanded', 'false');
-
-  var lastFocused = null;
-  var focusableSel = [
-    'a[href]','area[href]','input:not([disabled]):not([type="hidden"])',
-    'select:not([disabled])','textarea:not([disabled])',
-    'button:not([disabled])','[tabindex]:not([tabindex="-1"])'
-  ].join(',');
-
-  function isOpen(){ return toggle.getAttribute('aria-expanded') === 'true'; }
-
-  function openPanel(){
-    lastFocused = document.activeElement;
-    panel.setAttribute('aria-hidden', 'false');
-    var f = panel.querySelectorAll(focusableSel);
-    if (f.length) f[0].focus();
-    document.addEventListener('keydown', onKeydown);
-  }
-
-  function closePanel(){
-    panel.setAttribute('aria-hidden', 'true');
-    document.removeEventListener('keydown', onKeydown);
-    if (typeof toggle.focus === 'function') toggle.focus();
-  }
-
-  function onKeydown(e){
-    if (e.key === 'Escape' || e.key === 'Esc'){
-      if (isOpen()) { e.preventDefault(); toggle.click(); }
+    if (!panel) {
+      console.warn('[mobile-nav] No mobile nav panel found. Add element with [data-mobile-nav-panel] or .mobile-nav-panel or #mobileNav.');
       return;
     }
-    if (e.key === 'Tab'){
+    if (!panel.classList.contains('mobile-nav-panel')) panel.classList.add('mobile-nav-panel');
+    if (!panel.id) panel.id = 'mobile-nav-panel';
+
+    // Find an existing toggle
+    var toggle =
+      doc.querySelector('[data-mobile-nav-toggle]') ||
+      doc.querySelector('.mobile-nav-toggle') ||
+      doc.querySelector('#mobileMenuButton') ||
+      doc.querySelector('.hamburger') ||
+      doc.querySelector('button[aria-label*="menu" i]');
+
+    // If none, inject one
+    if (!toggle) {
+      toggle = doc.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'hamburger-btn';
+      toggle.setAttribute('data-mobile-nav-toggle','');
+      toggle.setAttribute('aria-label', 'Open menu');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', panel.id);
+      toggle.innerHTML = '<span class="hamburger-box" aria-hidden="true">' +
+                           '<span class="hamburger-line"></span>' +
+                           '<span class="hamburger-line"></span>' +
+                           '<span class="hamburger-line"></span>' +
+                         '</span>';
+      var header = doc.querySelector('header') || doc.querySelector('.site-header');
+      if (header) {
+        header.classList.add('has-hamburger-injected');
+        header.insertBefore(toggle, header.firstChild);
+      } else {
+        // Fallback: fixed to the viewport top-left
+        toggle.classList.add('hamburger-fixed');
+        body.appendChild(toggle);
+      }
+    }
+
+    // Ensure linkage
+    if (!toggle.hasAttribute('aria-controls')) toggle.setAttribute('aria-controls', panel.id);
+    if (!toggle.hasAttribute('aria-expanded')) toggle.setAttribute('aria-expanded', 'false');
+
+    // Dialog semantics
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    if (!panel.hasAttribute('aria-hidden')) panel.setAttribute('aria-hidden','true');
+
+    // Optional overlay (create if missing)
+    var overlay = doc.querySelector('.mobile-nav-overlay, [data-mobile-nav-overlay]');
+    if (!overlay) {
+      overlay = doc.createElement('div');
+      overlay.className = 'mobile-nav-overlay';
+      overlay.setAttribute('aria-hidden', 'true');
+      body.appendChild(overlay);
+    }
+
+    var focusableSel = [
+      'a[href]','area[href]',
+      'input:not([disabled]):not([type="hidden"])',
+      'select:not([disabled])',
+      'textarea:not([disabled])',
+      'button:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])'
+    ].join(',');
+
+    var lastFocused = null;
+
+    function isOpen(){ return toggle.getAttribute('aria-expanded') === 'true'; }
+
+    function openPanel(){
+      lastFocused = doc.activeElement;
+      toggle.setAttribute('aria-expanded', 'true');
+      panel.setAttribute('aria-hidden', 'false');
+      body.classList.add('no-scroll');
+      overlay.classList.add('is-active');
       var f = panel.querySelectorAll(focusableSel);
-      if (!f.length) return;
-      var first = f[0], last = f[f.length-1];
-      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      if (f.length) f[0].focus();
+      doc.addEventListener('keydown', onKeydown);
     }
-  }
 
-  var mo = new MutationObserver(function(rs){
-    rs.forEach(function(r){
-      if (r.attributeName === 'aria-expanded'){ isOpen() ? openPanel() : closePanel(); }
+    function closePanel(){
+      toggle.setAttribute('aria-expanded', 'false');
+      panel.setAttribute('aria-hidden', 'true');
+      body.classList.remove('no-scroll');
+      overlay.classList.remove('is-active');
+      doc.removeEventListener('keydown', onKeydown);
+      if (typeof toggle.focus === 'function') toggle.focus();
+    }
+
+    function onKeydown(e){
+      if (e.key === 'Escape' || e.key === 'Esc') {
+        if (isOpen()) { e.preventDefault(); closePanel(); }
+        return;
+      }
+      if (e.key === 'Tab') {
+        var f = panel.querySelectorAll(focusableSel);
+        if (!f.length) return;
+        var first = f[0], last = f[f.length-1];
+        if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+
+    // Toggle behavior
+    toggle.addEventListener('click', function(){
+      isOpen() ? closePanel() : openPanel();
     });
-  });
-  mo.observe(toggle, { attributes: true });
 
-  var overlay = document.querySelector('.mobile-nav-overlay, [data-mobile-nav-overlay]');
-  if (overlay) overlay.addEventListener('click', function(){ if (isOpen()) toggle.click(); });
+    // Overlay click closes
+    overlay.addEventListener('click', function(){
+      if (isOpen()) closePanel();
+    });
 
-  var lastWidth = window.innerWidth;
-  window.addEventListener('resize', function(){
-    var now = window.innerWidth;
-    if ((lastWidth < 1024 && now >= 1024) || (lastWidth >= 1024 && now < 1024)){
-      if (isOpen()) toggle.click();
-    }
-    lastWidth = now;
+    // Close if switching breakpoints (e.g., rotating device)
+    var lastW = window.innerWidth;
+    window.addEventListener('resize', function(){
+      var now = window.innerWidth;
+      if ((lastW < 1024 && now >= 1024) || (lastW >= 1024 && now < 1024)) {
+        if (isOpen()) closePanel();
+      }
+      lastW = now;
+    });
   });
 })();
