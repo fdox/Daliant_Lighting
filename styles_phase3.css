@@ -1316,3 +1316,32 @@ header .nav-container,
 header .header-flex {
   position: relative !important;
 }
+
+/* ===== Explore Fixtures image row: uniform ratio & clean crop ===== */
+section:has(> h2#explore-fixtures) .fixture-slice{
+  aspect-ratio: 2 / 3;            /* ↓ make shorter/tighter by changing to 3/4 or 1/1 */
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+}
+section:has(> h2#explore-fixtures) .fixture-slice-img{
+  display: block;
+  width: 100%;
+  height: 100%;                   /* fill the ratio box */
+  object-fit: cover;              /* crop, no distortion */
+  object-position: center;
+}
+
+/* Optional: make sure the four images line up nicely */
+section:has(> h2#explore-fixtures) .fixture-slices-grid{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 1023.98px){
+  section:has(> h2#explore-fixtures) .fixture-slices-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  section:has(> h2#explore-fixtures) .fixture-slice{ border-radius: 10px; }
+}
