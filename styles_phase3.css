@@ -1345,3 +1345,17 @@ section:has(> h2#explore-fixtures) .fixture-slices-grid{
   }
   section:has(> h2#explore-fixtures) .fixture-slice{ border-radius: 10px; }
 }
+
+/* ===== Explore Fixtures: use 3:4 aspect ratio (w:h) + fallback ===== */
+section:has(> h2#explore-fixtures) .fixture-slice,
+.fixture-slices-grid .fixture-slice {
+  aspect-ratio: 3 / 4 !important;   /* was 2/3; 3/4 is a bit shorter and cleaner */
+}
+
+section:has(> h2#explore-fixtures) .fixture-slice-img,
+.fixture-slices-grid .fixture-slice-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                 /* crop, no distortion */
+  object-position: center;           /* tweak per-image later if needed */
+}
