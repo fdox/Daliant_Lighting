@@ -1025,3 +1025,90 @@ body.no-scroll { overflow: hidden !important; }
     z-index: 1002 !important;
   }
 }
+
+/* ===== Mobile header UI – overrides (final) ===== */
+@media (max-width: 1023.98px){
+  /* Use a 3-column grid: [hamburger] [logo] [login] */
+  header .nav-container,
+  header .header-flex{
+    display: grid !important;
+    grid-template-columns: 44px 1fr 44px !important;
+    align-items: center !important;
+    position: relative !important;
+    gap: 8px !important;
+    padding: 10px 14px !important;
+  }
+  /* Center the logo */
+  .logo, .logo-align{ grid-column: 2 !important; justify-self: center !important; }
+  .logo .logo-img, .logo-align .logo-img{ height: 34px !important; width: auto !important; }
+
+  /* Hide big nav and dropdowns on mobile */
+  .nav-primary, .nav-right, .dropdown{ display: none !important; }
+
+  /* Left hamburger: borderless, floating */
+  .hamburger-btn{
+    display: inline-flex !important;
+    position: absolute !important;
+    left: 12px !important;
+    top: 12px !important;
+    width: 44px !important;
+    height: 44px !important;
+    padding: 8px !important;
+    background: transparent !important;
+    border: 0 !important;
+    color: #111 !important;
+    z-index: 1002 !important;
+  }
+  .hamburger-btn .hamburger-lines{ position: relative; width: 24px; height: 2px; background: currentColor; border-radius: 2px; }
+  .hamburger-btn .hamburger-lines span{
+    position: absolute; left: 0; width: 24px; height: 2px; background: currentColor; border-radius: 2px;
+    transition: transform .2s ease, opacity .2s ease, background .2s ease;
+  }
+  .hamburger-btn .hamburger-lines span:nth-child(1){ top: -6px; }
+  .hamburger-btn .hamburger-lines span:nth-child(2){ top: 0; }
+  .hamburger-btn .hamburger-lines span:nth-child(3){ top: 6px; }
+  .hamburger-btn.is-open .hamburger-lines{ background: transparent; }
+  .hamburger-btn.is-open .hamburger-lines span:nth-child(1){ transform: translateY(6px) rotate(45deg); }
+  .hamburger-btn.is-open .hamburger-lines span:nth-child(2){ opacity: 0; }
+  .hamburger-btn.is-open .hamburger-lines span:nth-child(3){ transform: translateY(-6px) rotate(-45deg); }
+  .hamburger-btn:focus-visible,
+  .login-icon-btn:focus-visible{ outline: 2px solid currentColor; outline-offset: 3px; }
+
+  /* Right login icon */
+  .icon-btn.login-icon-btn{
+    display: inline-flex !important;
+    position: absolute !important;
+    right: 12px !important;
+    top: 12px !important;
+    width: 28px !important;
+    height: 28px !important;
+    align-items: center; justify-content: center;
+    color: #111 !important;
+    text-decoration: none;
+    z-index: 1002 !important;
+  }
+
+  /* Panel + overlay (baseline—keeps your earlier a11y helpers) */
+  .mobile-nav-panel{
+    position: fixed; inset: 0 auto 0 0;
+    width: 82vw; max-width: 360px;
+    background: #fff;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    z-index: 1003;
+    box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    padding: 18px 16px;
+  }
+  .mobile-nav-panel[aria-hidden="false"]{ transform: translateX(0); }
+  .mobile-nav-overlay{
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.35);
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s ease; z-index: 1001;
+  }
+  .mobile-nav-overlay.is-active{ opacity: 1; pointer-events: auto; }
+  body.no-scroll{ overflow: hidden !important; }
+}
+@media (prefers-reduced-motion: reduce){
+  .mobile-nav-panel, .mobile-nav-overlay{ transition: none !important; }
+}
