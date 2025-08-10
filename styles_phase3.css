@@ -1112,3 +1112,30 @@ body.no-scroll { overflow: hidden !important; }
 @media (prefers-reduced-motion: reduce){
   .mobile-nav-panel, .mobile-nav-overlay{ transition: none !important; }
 }
+
+/* ===== Login icon base (desktop & mobile) ===== */
+.icon-btn.login-icon-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  color: #111 !important;           /* unify color to black */
+  text-decoration: none;
+}
+
+/* Mobile-only clone is pinned top-right; hide desktop icon on mobile */
+@media (max-width: 1023.98px){
+  .nav-right .login-icon-btn{ display: none !important; }      /* desktop icon hidden on mobile */
+  .login-icon-btn.login-mobile-only{
+    display: inline-flex !important;
+    position: absolute !important;
+    right: 12px !important;
+    top: 12px !important;
+    z-index: 1002 !important;
+  }
+}
+
+/* Hide the mobile clone on desktop; keep desktop icon inline in .nav-right */
+@media (min-width: 1024px){
+  .login-icon-btn.login-mobile-only{ display: none !important; }
+}
