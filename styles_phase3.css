@@ -527,7 +527,6 @@ footer{ /* minimize generic footer rules; specific styles on .footer-main */ }
 .hidden{ display:none; }
 
 .btn-block{ display:block; width:100%; text-align:center; margin-top:.5rem; }
-<<<<<<< HEAD
 
 /* =========================
    Mobile Header Clean-up
@@ -550,11 +549,9 @@ header .nav-container {
   list-style: none;
 }
 
-.logo .logo-img,
 8px;
   width: auto;
   display: block;
-}
 
 /* Hide large dropdown by default on touch */
 .nav-primary .dropdown { display: none; }
@@ -616,8 +613,6 @@ header .nav-container {
     padding: 10px 14px;
   }
   .logo, .logo-align { grid-column: 2; justify-self: center; }
-  .logo .logo-img, .logo-align .logo-img { height: 34px; } /* smaller only on mobile */
-  .nav-primary, .nav-right, .dropdown { display: none !important; }
 
   /* Panel overlay */
   #mobileMenu {
@@ -648,8 +643,6 @@ header .nav-container {
 
   html.no-scroll, body.no-scroll { overflow: hidden; }
 }
-=======
->>>>>>> parent of 4f4b95a (Mobile header cleanup + Explore page header/logo + Mira/Aven links normalized)
 
 /* Homepage Mobile Header */
 @media (max-width: 768px) {
@@ -871,4 +864,164 @@ header .nav-container {
 }
 .contact-section + footer {
   margin-top: 0 !important;
+}
+
+/* ===== Mobile menu a11y helpers ===== */
+body.no-scroll { overflow: hidden !important; }
+.mobile-nav-panel[aria-hidden="true"] { visibility: hidden; }
+.mobile-nav-panel[aria-hidden="false"] { visibility: visible; }
+.mobile-nav-panel :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-panel, .mobile-nav-overlay { transition: none !important; }
+}
+
+/* ===== Hamburger button (visible on mobile only) ===== */
+.hamburger-btn {
+  display: none; /* default hidden, shown via media query */
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  background: transparent;
+  color: #111; /* fallback; inherits if header sets a color */
+  cursor: pointer;
+  z-index: 1002;
+}
+.hamburger-btn .hamburger-box { display: inline-block; line-height: 0; }
+.hamburger-btn .hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin: 4px 0;
+  background: currentColor;
+  border-radius: 2px;
+}
+
+/* Position inside header when injected there */
+header.has-hamburger-injected { position: relative; }
+header.has-hamburger-injected .hamburger-btn {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+}
+
+/* Fallback fixed-position if no header is found */
+.hamburger-fixed { position: fixed; left: 12px; top: 12px; }
+
+/* Show on mobile, hide on desktop */
+@media (max-width: 1023.98px) {
+  .hamburger-btn { display: inline-flex; }
+  /* If an existing toggle element is present, ensure it's not accidentally hidden */
+  [data-mobile-nav-toggle], .mobile-nav-toggle, #mobileMenuButton, .hamburger {
+    display: inline-flex !important;
+  }
+}
+@media (min-width: 1024px) {
+  .hamburger-btn,
+  [data-mobile-nav-toggle], .mobile-nav-toggle, #mobileMenuButton, .hamburger {
+    display: none !important;
+  }
+}
+
+/* Overlay (if we auto-create one) */
+.mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+  z-index: 1001;
+}
+.mobile-nav-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Honor reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-overlay { transition: none !important; }
+}
+
+/* ====== Mobile hamburger (TOP-LEFT, mobile only) ====== */
+.hamburger-btn {
+  display: none; /* shown via media query */
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  background: transparent;
+  color: #111; /* inherits from header if set */
+  cursor: pointer;
+  z-index: 1002;
+}
+.hamburger-btn .hamburger-box { display: inline-block; line-height: 0; }
+.hamburger-btn .hamburger-line {
+  display: block; width: 22px; height: 2px; margin: 4px 0;
+  background: currentColor; border-radius: 2px;
+}
+
+/* Place inside header at top-left */
+header.has-hamburger-injected { position: relative; }
+header.has-hamburger-injected .hamburger-btn {
+  position: absolute; left: 12px; top: 12px;
+}
+
+/* Fallback fixed placement if no header found */
+.hamburger-fixed { position: fixed; left: 12px; top: 12px; }
+
+/* Show ONLY on mobile; hide on desktop */
+@media (max-width: 1023.98px) {
+  .hamburger-btn { display: inline-flex !important; }
+  header .hamburger, header .mobile-nav-toggle, header #mobileMenuButton, header [data-mobile-nav-toggle] {
+    display: inline-flex !important; position: absolute !important; left: 12px !important; top: 12px !important; z-index: 1002 !important;
+  }
+}
+@media (min-width: 1024px) {
+  .hamburger-btn,
+  header .hamburger, header .mobile-nav-toggle, header #mobileMenuButton, header [data-mobile-nav-toggle] {
+    display: none !important;
+  }
+}
+
+/* ====== Off-canvas panel + overlay (baseline styles) ====== */
+.mobile-nav-panel {
+  position: fixed; inset: 0 auto 0 0;  /* top 0, left 0, bottom 0 */
+  width: 82vw; max-width: 360px;
+  background: #fff;
+  transform: translateX(-100%);
+  transition: transform 250ms ease;
+  z-index: 1003;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.mobile-nav-panel[aria-hidden="false"] { transform: translateX(0); }
+
+.mobile-nav-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.35);
+  opacity: 0; pointer-events: none;
+  transition: opacity 200ms ease; z-index: 1001;
+}
+.mobile-nav-overlay.is-active { opacity: 1; pointer-events: auto; }
+
+body.no-scroll { overflow: hidden !important; }
+.mobile-nav-panel :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-panel, .mobile-nav-overlay { transition: none !important; }
+}
+
+/* Force hamburger visible top-left on mobile */
+@media (max-width: 1023.98px) {
+  header.has-hamburger-injected .hamburger-btn,
+  header .hamburger-btn,
+  [data-mobile-nav-toggle].hamburger-btn {
+    display: inline-flex !important;
+    position: absolute !important;
+    left: 12px !important;
+    top: 12px !important;
+    z-index: 1002 !important;
+  }
 }
