@@ -121,3 +121,42 @@
     });
   });
 })();
+
+// ---- Enhance "Explore DALI-Compatible Fixtures" image row (3:4, cropped) ----
+(function(){
+  function enhanceExploreSlices(){
+    try {
+      var heads = document.querySelectorAll('h1,h2,h3');
+      var heading = null;
+      heads.forEach(function(h){
+        var t = (h.textContent || '').toLowerCase();
+        if (t.indexOf('explore dali') !== -1 && !heading) heading = h;
+      });
+      if (!heading) return;
+
+      // use the nearest section as the scope, or fallback to the heading's parent
+      var scope = heading.closest('section') || heading.parentElement || document.body;
+
+      // find candidate images *within* this section that are tall slices
+      var imgs = Array.prototype.slice.call(scope.querySelectorAll('img'));
+      var tall = imgs.filter(function(img){
+        if (img.closest('.fixture-slice')) return false;                 // already handled
+        var cls = (img.className || '');
+        if (/logo|icon/i.test(cls)) return false;                         // skip logos/icons
+        var w = img.naturalWidth || img.width || 0;
+        var h = img.naturalHeight || img.height || 0;
+        return w && h && (h / w) > 1.3;                                   // tall-ish images
+      }).slice(0, 4);                                                     // take the first four
+
+      tall.forEach(function(img){
+        var wrap = document.createElement('div');
+        wrap.className = 'fixture-slice';
+        img.parentNode.insertBefore(wrap, img);
+        wrap.appendChild(img);
+        img.classList.add('fixture-slice-img');
+      });
+    } catch(e){ /* no-op */ }
+  }
+  if (document.readyState === 'complete') enhanceExploreSlices();
+  window.addEventListener('load', function(){ setTimeout(enhanceExploreSlices, 50); });
+})();

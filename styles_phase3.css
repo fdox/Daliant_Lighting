@@ -1359,3 +1359,18 @@ section:has(> h2#explore-fixtures) .fixture-slice-img,
   object-fit: cover;                 /* crop, no distortion */
   object-position: center;           /* tweak per-image later if needed */
 }
+
+/* ===== Explore Fixtures image tiles: uniform 3:4 ratio + clean crop ===== */
+.fixture-slice{
+  aspect-ratio: 3 / 4 !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  border-radius: 12px;
+}
+.fixture-slice-img{
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;     /* crop without distortion */
+  object-position: center;          /* tweak per-tile later if needed */
+}
