@@ -951,3 +951,71 @@ header.has-hamburger-injected .hamburger-btn {
 @media (prefers-reduced-motion: reduce) {
   .mobile-nav-overlay { transition: none !important; }
 }
+
+/* ====== Mobile hamburger (TOP-LEFT, mobile only) ====== */
+.hamburger-btn {
+  display: none; /* shown via media query */
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  background: transparent;
+  color: #111; /* inherits from header if set */
+  cursor: pointer;
+  z-index: 1002;
+}
+.hamburger-btn .hamburger-box { display: inline-block; line-height: 0; }
+.hamburger-btn .hamburger-line {
+  display: block; width: 22px; height: 2px; margin: 4px 0;
+  background: currentColor; border-radius: 2px;
+}
+
+/* Place inside header at top-left */
+header.has-hamburger-injected { position: relative; }
+header.has-hamburger-injected .hamburger-btn {
+  position: absolute; left: 12px; top: 12px;
+}
+
+/* Fallback fixed placement if no header found */
+.hamburger-fixed { position: fixed; left: 12px; top: 12px; }
+
+/* Show ONLY on mobile; hide on desktop */
+@media (max-width: 1023.98px) {
+  .hamburger-btn { display: inline-flex !important; }
+  header .hamburger, header .mobile-nav-toggle, header #mobileMenuButton, header [data-mobile-nav-toggle] {
+    display: inline-flex !important; position: absolute !important; left: 12px !important; top: 12px !important; z-index: 1002 !important;
+  }
+}
+@media (min-width: 1024px) {
+  .hamburger-btn,
+  header .hamburger, header .mobile-nav-toggle, header #mobileMenuButton, header [data-mobile-nav-toggle] {
+    display: none !important;
+  }
+}
+
+/* ====== Off-canvas panel + overlay (baseline styles) ====== */
+.mobile-nav-panel {
+  position: fixed; inset: 0 auto 0 0;  /* top 0, left 0, bottom 0 */
+  width: 82vw; max-width: 360px;
+  background: #fff;
+  transform: translateX(-100%);
+  transition: transform 250ms ease;
+  z-index: 1003;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.mobile-nav-panel[aria-hidden="false"] { transform: translateX(0); }
+
+.mobile-nav-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.35);
+  opacity: 0; pointer-events: none;
+  transition: opacity 200ms ease; z-index: 1001;
+}
+.mobile-nav-overlay.is-active { opacity: 1; pointer-events: auto; }
+
+body.no-scroll { overflow: hidden !important; }
+.mobile-nav-panel :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-panel, .mobile-nav-overlay { transition: none !important; }
+}
