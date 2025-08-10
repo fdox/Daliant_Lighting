@@ -527,7 +527,6 @@ footer{ /* minimize generic footer rules; specific styles on .footer-main */ }
 .hidden{ display:none; }
 
 .btn-block{ display:block; width:100%; text-align:center; margin-top:.5rem; }
-<<<<<<< HEAD
 
 /* =========================
    Mobile Header Clean-up
@@ -550,11 +549,9 @@ header .nav-container {
   list-style: none;
 }
 
-.logo .logo-img,
 8px;
   width: auto;
   display: block;
-}
 
 /* Hide large dropdown by default on touch */
 .nav-primary .dropdown { display: none; }
@@ -616,8 +613,6 @@ header .nav-container {
     padding: 10px 14px;
   }
   .logo, .logo-align { grid-column: 2; justify-self: center; }
-  .logo .logo-img, .logo-align .logo-img { height: 34px; } /* smaller only on mobile */
-  .nav-primary, .nav-right, .dropdown { display: none !important; }
 
   /* Panel overlay */
   #mobileMenu {
@@ -648,8 +643,6 @@ header .nav-container {
 
   html.no-scroll, body.no-scroll { overflow: hidden; }
 }
-=======
->>>>>>> parent of 4f4b95a (Mobile header cleanup + Explore page header/logo + Mira/Aven links normalized)
 
 /* Homepage Mobile Header */
 @media (max-width: 768px) {
@@ -1018,4 +1011,17 @@ body.no-scroll { overflow: hidden !important; }
 .mobile-nav-panel :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
   .mobile-nav-panel, .mobile-nav-overlay { transition: none !important; }
+}
+
+/* Force hamburger visible top-left on mobile */
+@media (max-width: 1023.98px) {
+  header.has-hamburger-injected .hamburger-btn,
+  header .hamburger-btn,
+  [data-mobile-nav-toggle].hamburger-btn {
+    display: inline-flex !important;
+    position: absolute !important;
+    left: 12px !important;
+    top: 12px !important;
+    z-index: 1002 !important;
+  }
 }
