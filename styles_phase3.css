@@ -872,3 +872,12 @@ header .nav-container {
 .contact-section + footer {
   margin-top: 0 !important;
 }
+
+/* ===== Mobile menu a11y helpers ===== */
+body.no-scroll { overflow: hidden !important; }
+.mobile-nav-panel[aria-hidden="true"] { visibility: hidden; }
+.mobile-nav-panel[aria-hidden="false"] { visibility: visible; }
+.mobile-nav-panel :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-panel, .mobile-nav-overlay { transition: none !important; }
+}
