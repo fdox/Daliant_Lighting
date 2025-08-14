@@ -1374,3 +1374,30 @@ section:has(> h2#explore-fixtures) .fixture-slice-img,
   object-fit: cover !important;     /* crop without distortion */
   object-position: center;          /* tweak per-tile later if needed */
 }
+/* ===== Daliant header — floating, rounded container (2025‑08‑14) ===== */
+:root{
+  --header-max: 1240px;                   /* tune width cap */
+  --header-gutter: clamp(8px, 3vw, 24px); /* side & top breathing room */
+  --header-radius: 14px;                  /* corner roundness */
+}
+/* Make the top-of-page header a centered container that doesn't span full width */
+body > header:first-of-type{
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: min(var(--header-max), calc(100% - (var(--header-gutter) * 2))) !important;
+  margin: 0 auto;
+  border-radius: var(--header-radius);
+  transition: margin-top .25s ease, box-shadow .25s ease, border-radius .25s ease;
+  /* Keep your existing background; if you want a frosted look, uncomment:
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  background-color: rgba(255,255,255,.75);  (or a dark theme equivalent)
+  */
+}
+/* When scrolled, lift the header off the very top so the rounded corners are visible */
+body.is-scrolled > header:first-of-type{
+  margin-top: var(--header-gutter);
+  box-shadow: 0 10px 30px rgba(0,0,0,.14);
+}
+/* ===== /Daliant header ===== */

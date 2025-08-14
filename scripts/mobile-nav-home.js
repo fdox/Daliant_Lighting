@@ -160,3 +160,18 @@
   if (document.readyState === 'complete') enhanceExploreSlices();
   window.addEventListener('load', function(){ setTimeout(enhanceExploreSlices, 50); });
 })();
+// ===== Daliant header scroll hook (2025-08-14) =====
+(function(){
+  if (window.__DALIANT_HEADER_FLOATING__) return;  // prevent double attach
+  window.__DALIANT_HEADER_FLOATING__ = true;
+  var d = document, w = window, body = d.body;
+  function setFloating(){
+    var y = w.scrollY || w.pageYOffset || d.documentElement.scrollTop || 0;
+    var scrolled = y > 4; // tiny hysteresis to avoid flicker at the very top
+    body.classList.toggle('is-scrolled', scrolled);
+  }
+  setFloating();
+  w.addEventListener('scroll', setFloating, {passive:true});
+  w.addEventListener('load', setFloating);
+})();
+// ===== /Daliant header scroll hook =====
