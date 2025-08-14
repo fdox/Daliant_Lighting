@@ -296,3 +296,73 @@
   w.addEventListener('load', function(){ setTimeout(check, 80); });
 })();
 // ============================================================================
+// ==== Daliant header reveal controller (v3, 2025-08-14) =====================
+(function(){
+  if (window.__DALIANT_REVEAL_V3__) return;
+  window.__DALIANT_REVEAL_V3__ = true;
+
+  var d = document, w = window, body = d.body;
+  var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+  if (!header) return;
+
+  // Sentinel just AFTER the header marks the "bottom of header" in normal flow
+  var after = d.querySelector('[data-header-after-v3]');
+  if (!after){
+    after = d.createElement('div');
+    after.setAttribute('data-header-after-v3','');
+    after.style.cssText = 'height:1px;margin:0;padding:0;';
+    header.parentNode.insertBefore(after, header.nextSibling);
+  }
+
+  function scrollY(){
+    return window.pageYOffset || d.documentElement.scrollTop || d.body.scrollTop || 0;
+  }
+  function sentinelDocTop(){
+    var r = after.getBoundingClientRect();
+    return scrollY() + r.top;
+  }
+
+  var threshold = 0;
+
+  // Recompute threshold (using sentinel) even if header gets fixed later
+  function recompute(){
+    // temporarily ensure header is measured in normal flow if needed
+    var wasFloating = body.classList.contains('dl-reveal');
+    if (wasFloating) body.classList.remove('dl-reveal','dl-reveal-show');
+    threshold = sentinelDocTop();
+    if (wasFloating) body.classList.add('dl-reveal'); // restore; visibility will update below
+  }
+
+  function setReveal(on){
+    if (on){
+      if (!body.classList.contains('dl-reveal')){
+        body.classList.add('dl-reveal');
+        // start hidden, then fade to visible next frame
+        body.classList.remove('dl-reveal-show');
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){
+          body.classList.add('dl-reveal-show');
+        });});
+      }
+    } else {
+      if (body.classList.contains('dl-reveal')){
+        body.classList.remove('dl-reveal-show');
+        body.classList.remove('dl-reveal');
+      }
+    }
+  }
+
+  function onScroll(){
+    setReveal(scrollY() >= threshold);
+  }
+
+  // Init
+  recompute();
+  onScroll();
+
+  // Events
+  w.addEventListener('scroll', onScroll, {passive:true});
+  w.addEventListener('resize', function(){ recompute(); onScroll(); }, {passive:true});
+  w.addEventListener('load', function(){ setTimeout(function(){ recompute(); onScroll(); }, 120); });
+
+})();
+// ===========================================================================
