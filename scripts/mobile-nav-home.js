@@ -254,3 +254,45 @@
   w.addEventListener('scroll', onScroll, {passive:true});
 })();
 // ===== /DMF-style header controller =====
+// ==== DMF-style reveal controller (2025-08-14) ==============================
+(function(){
+  if (window.__DALIANT_REVEAL_V2__) return;
+  window.__DALIANT_REVEAL_V2__ = true;
+
+  var d = document, w = window, body = d.body;
+  var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+  if (!header) return;
+
+  // Remove older classes (from earlier experiments) so they don't interfere
+  body.classList.remove('has-gap','has-fixed-header','is-scrolled','dl-has-gap','dl-fixed-header');
+
+  // Create a sentinel immediately AFTER the header; when it goes above the viewport,
+  // we know the header has fully scrolled away -> show floating pill.
+  var after = d.createElement('div');
+  after.setAttribute('data-header-after','');
+  after.style.cssText = 'height:1px;margin:0;padding:0;';
+  header.parentNode.insertBefore(after, header.nextSibling);
+
+  function setFloat(on){ body.classList.toggle('dl-float', !!on); }
+
+  // IntersectionObserver toggles floating state
+  var prev;
+  function ioHandler(entries){
+    var e = entries[0]; if (!e) return;
+    var on = (!e.isIntersecting && e.boundingClientRect.top < 0); // sentinel above viewport
+    if (on !== prev){ prev = on; setFloat(on); }
+  }
+  var io = new IntersectionObserver(ioHandler, {root:null, threshold:0});
+  io.observe(after);
+
+  // Fallback + first-run (covers browsers without IO quirks and initial position)
+  function check(){
+    var top = after.getBoundingClientRect().top;
+    setFloat(top < 0);
+  }
+  check();
+  w.addEventListener('scroll', check, {passive:true});
+  w.addEventListener('resize', check, {passive:true});
+  w.addEventListener('load', function(){ setTimeout(check, 80); });
+})();
+// ============================================================================

@@ -1517,3 +1517,46 @@ body.dl-has-gap > header:first-of-type{
 /* Add padding only when header is fixed to prevent layout jump */
 body.dl-fixed-header{ padding-top: var(--header-h, 0px) !important; }
 /* ===== /DMF-style header behavior ===== */
+/* ==== DMF-style reveal header (2025-08-14) ================================= */
+:root{
+  --header-max: 1240px;
+  --header-gutter: clamp(8px, 3vw, 24px);
+  --header-radius: 14px;
+  /* Gap visible ABOVE the header once it reappears after scroll */
+  --header-gap: clamp(36px, 7vw, 88px);
+}
+
+/* Keep header as a centered, capped-width container */
+body > header:first-of-type{
+  width: min(var(--header-max), calc(100% - (var(--header-gutter) * 2))) !important;
+  margin-left: auto; margin-right: auto;
+}
+
+/* RESET old behaviors so there's NO GAP at the top of the page */
+body.is-scrolled > header:first-of-type,
+body.has-gap > header:first-of-type,
+body.dl-has-gap > header:first-of-type{
+  margin-top: 0 !important;
+  box-shadow: none !important;
+}
+
+/* TOP OF PAGE: header participates in normal flow (not sticky/fixed) */
+body:not(.dl-float) > header:first-of-type{
+  position: static !important;              /* overrides any previous sticky */
+  border-radius: 0 0 var(--header-radius) var(--header-radius) !important;
+  box-shadow: none !important;
+}
+
+/* AFTER SCROLL PAST HEADER: floating pill with gap above it */
+body.dl-float > header:first-of-type{
+  position: fixed !important;
+  left: 0; right: 0;
+  top: calc(env(safe-area-inset-top) + var(--header-gap)) !important;
+  border-radius: var(--header-radius) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,.14) !important;
+  z-index: 1000;
+}
+
+/* Ensure old padding-compensation hacks are neutralized */
+body.has-fixed-header, body.dl-fixed-header{ padding-top: 0 !important; }
+/* ========================================================================== */
