@@ -366,3 +366,76 @@
 
 })();
 // ===========================================================================
+// ==== Header: reveal only when scrolling UP (v4, 2025-08-14) ================
+(function(){
+  if (window.__DALIANT_REVEAL_UP_V4__) return;
+  window.__DALIANT_REVEAL_UP_V4__ = true;
+
+  var d = document, w = window, body = d.body;
+  var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+  if (!header) return;
+
+  // Sentinel AFTER the header = bottom edge of header in normal flow
+  var after = d.querySelector('[data-header-after-up]');
+  if (!after){
+    after = d.createElement('div');
+    after.setAttribute('data-header-after-up','');
+    after.style.cssText = 'height:1px;margin:0;padding:0;';
+    header.parentNode.insertBefore(after, header.nextSibling);
+  }
+
+  function y(){ return w.pageYOffset || d.documentElement.scrollTop || 0; }
+  function threshold(){
+    var r = after.getBoundingClientRect();
+    return y() + r.top;
+  }
+
+  var lastY = y(), accUp = 0, accDown = 0;
+  var showAfterUp = 24;   // px scrolled UP before showing header (tune)
+  var minDelta   = 2;     // ignore tiny jitter
+  var t = threshold();
+
+  function recompute(){ t = threshold(); }
+
+  function show(){
+    if (!body.classList.contains('dl-reveal-up')){
+      body.classList.add('dl-reveal-up');
+      requestAnimationFrame(function(){ body.classList.add('dl-show'); });
+    } else {
+      body.classList.add('dl-show');
+    }
+  }
+  function hide(){ body.classList.remove('dl-show'); } // keep dl-reveal-up; it's non-interactive when hidden
+
+  function onScroll(){
+    var cur = y(), dy = cur - lastY;
+    if (Math.abs(dy) < minDelta){ lastY = cur; return; }
+
+    if (dy > 0){ accDown += dy; accUp = 0; }   // scrolling down
+    else       { accUp   +=-dy; accDown = 0; } // scrolling up
+
+    var past = cur >= t;
+
+    if (!past){
+      // Near the top: let header be in normal flow, no floating pill
+      body.classList.remove('dl-show','dl-reveal-up');
+      accUp = accDown = 0;
+    } else {
+      if (dy > 0){
+        // Going down: hide (for distraction-free reading)
+        hide();
+      } else {
+        // Going up: reveal only after a little upward travel
+        if (accUp >= showAfterUp) show();
+      }
+    }
+    lastY = cur;
+  }
+
+  // Init
+  recompute(); onScroll();
+  w.addEventListener('scroll', onScroll, {passive:true});
+  w.addEventListener('resize', function(){ recompute(); onScroll(); }, {passive:true});
+  w.addEventListener('load',  function(){ setTimeout(function(){ recompute(); onScroll(); }, 100); });
+})();
+// ============================================================================

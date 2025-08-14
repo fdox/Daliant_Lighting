@@ -1616,3 +1616,34 @@ body.dl-reveal.dl-reveal-show > header:first-of-type{
   }
 }
 /* ========================================================================= */
+/* ==== Header: upward-only reveal (v4, 2025‑08‑14) ========================== */
+/* Smaller gap above floating header */
+:root{ --header-gap: clamp(20px, 5vw, 44px); }
+
+/* Neutralize earlier 'dl-reveal' rules so they don't force fixed header */
+body.dl-reveal > header:first-of-type{
+  position: static !important; top: auto !important;
+  box-shadow: none !important; opacity: 1 !important; transform: none !important;
+  border-radius: 0 0 var(--header-radius) var(--header-radius) !important;
+}
+
+/* New upward-reveal classes */
+body.dl-reveal-up > header:first-of-type{
+  position: fixed !important; left: 0; right: 0;
+  top: calc(env(safe-area-inset-top) + var(--header-gap)) !important;
+  border-radius: var(--header-radius) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,.14) !important;
+  z-index: 1000;
+  opacity: 0; transform: translateY(-10px);
+  transition: opacity .22s ease, transform .22s ease, top .18s ease;
+  pointer-events: none; /* don't block clicks when hidden */
+}
+body.dl-reveal-up.dl-show > header:first-of-type{
+  opacity: 1; transform: translateY(0); pointer-events: auto;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  body.dl-reveal-up > header:first-of-type{ transition: none; opacity: 1; transform: none; }
+}
+/* ========================================================================== */
