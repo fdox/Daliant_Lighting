@@ -223,3 +223,34 @@
   w.addEventListener('load', function(){ setTimeout(syncHeaderHeight, 80); });
 })();
 // ===== /Header gap via IntersectionObserver =====
+// ===== DMF-style header controller (2025-08-14) =====
+(function(){
+  if (window.__DALIANT_HEADER_CTRL__) return;
+  window.__DALIANT_HEADER_CTRL__ = true;
+
+  // If older observers exist, neutralize their classes by never relying on them
+  // (CSS above already ignores .has-gap/.has-fixed-header unless our .dl-* flags are set)
+  var d = document, w = window, body = d.body;
+  var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+  if (!header) return;
+
+  function syncHeaderHeight(){
+    var h = header.getBoundingClientRect().height || 0;
+    d.documentElement.style.setProperty('--header-h', h + 'px');
+  }
+
+  function onScroll(){
+    var y = w.scrollY || d.documentElement.scrollTop || 0;
+    var scrolled = y > 16;                     // threshold before showing the gap
+    body.classList.toggle('dl-has-gap', scrolled);
+    body.classList.toggle('dl-fixed-header', scrolled);
+  }
+
+  // Init
+  syncHeaderHeight();
+  onScroll();
+  w.addEventListener('resize', function(){ syncHeaderHeight(); onScroll(); }, {passive:true});
+  w.addEventListener('load', function(){ setTimeout(function(){ syncHeaderHeight(); onScroll(); }, 80); });
+  w.addEventListener('scroll', onScroll, {passive:true});
+})();
+// ===== /DMF-style header controller =====

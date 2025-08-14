@@ -1474,3 +1474,46 @@ body.has-gap > header:first-of-type{
 /* Add top padding only when we switch to fixed, preventing content jump */
 body.has-fixed-header{ padding-top: var(--header-h, 0px); }
 /* ===== /Header: gap only when scrolled ===== */
+/* ===== DMF-style header behavior (2025‑08‑14) ===== */
+:root{
+  --header-max: 1240px;
+  --header-gutter: clamp(8px, 3vw, 24px);
+  --header-radius: 14px;
+  /* Visible gap when scrolled */
+  --header-gap: clamp(32px, 7vw, 80px);
+}
+
+/* Base: centered container & width cap (keep existing look) */
+body > header:first-of-type{
+  width: min(var(--header-max), calc(100% - (var(--header-gutter) * 2))) !important;
+  margin: 0 auto;
+}
+
+/* Neutralize any older scroll classes so they don't create a gap at the top */
+body.is-scrolled > header:first-of-type{ margin-top: 0 !important; }
+body.has-gap:not(.dl-has-gap) > header:first-of-type{
+  position: sticky !important; top: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 0 var(--header-radius) var(--header-radius) !important;
+}
+body.has-fixed-header:not(.dl-fixed-header){ padding-top: 0 !important; }
+
+/* TOP OF PAGE (no gap, blends perfectly) */
+body:not(.dl-has-gap) > header:first-of-type{
+  position: sticky; top: 0;
+  border-radius: 0 0 var(--header-radius) var(--header-radius);
+  box-shadow: none !important;
+}
+
+/* SCROLLED (re-appears with a visible gap; hero peeks through) */
+body.dl-has-gap > header:first-of-type{
+  position: fixed;
+  left: 0; right: 0;
+  top: calc(env(safe-area-inset-top) + var(--header-gap));
+  border-radius: var(--header-radius);
+  box-shadow: 0 10px 30px rgba(0,0,0,.14);
+  z-index: 1000;
+}
+/* Add padding only when header is fixed to prevent layout jump */
+body.dl-fixed-header{ padding-top: var(--header-h, 0px) !important; }
+/* ===== /DMF-style header behavior ===== */
