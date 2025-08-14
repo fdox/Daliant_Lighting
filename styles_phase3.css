@@ -1446,3 +1446,31 @@ body.is-scrolled > header:first-of-type{
 }
 /* (Top-of-page behavior from earlier stays: no shadow, no top rounding) */
 /* ===== /Header gap & fixed-on-scroll ===== */
+/* ===== Header: gap only when scrolled (2025‑08‑14) ===== */
+/* Larger visible gap above header when scrolled */
+:root{ --header-gap: clamp(28px, 6vw, 64px); }
+
+/* Kill any earlier margin-based lift if some script toggles .is-scrolled */
+body.is-scrolled > header:first-of-type{ margin-top: 0 !important; }
+
+/* Top-of-page (not scrolled): header blends with page */
+body:not(.has-gap) > header:first-of-type{
+  position: sticky;
+  top: 0;
+  border-radius: 0 0 var(--header-radius) var(--header-radius);
+  box-shadow: none !important; /* ensure no shadow at top */
+}
+
+/* When scrolled: create a real gap and keep rounded 'pill' */
+body.has-gap > header:first-of-type{
+  position: fixed;
+  left: 0; right: 0;
+  top: calc(env(safe-area-inset-top) + var(--header-gap));
+  border-radius: var(--header-radius);
+  box-shadow: 0 10px 30px rgba(0,0,0,.14);
+  z-index: 1000;
+}
+
+/* Add top padding only when we switch to fixed, preventing content jump */
+body.has-fixed-header{ padding-top: var(--header-h, 0px); }
+/* ===== /Header: gap only when scrolled ===== */

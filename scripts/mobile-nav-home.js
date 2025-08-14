@@ -190,3 +190,36 @@
   w.addEventListener('resize', syncHeaderHeight, {passive:true});
   w.addEventListener('load', function(){ setTimeout(syncHeaderHeight, 80); });
 })();
+// ===== Header gap via IntersectionObserver (2025-08-14) =====
+(function(){
+  if (window.__DALIANT_HEADER_OBSERVER__) return;
+  window.__DALIANT_HEADER_OBSERVER__ = true;
+
+  var d = document, w = window, body = d.body;
+  var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+  if (!header) return;
+
+  // 1) Create a tiny sentinel above the header to detect "at top" vs "scrolled"
+  var sentinel = d.createElement('div');
+  sentinel.setAttribute('data-header-sentinel','');
+  sentinel.style.cssText = 'height:1px; margin:0; padding:0;';
+  header.parentNode.insertBefore(sentinel, header);
+
+  // 2) Observer flips classes: has-gap + has-fixed-header only when scrolled
+  var io = new IntersectionObserver(function(entries){
+    var atTop = entries[0] && entries[0].isIntersecting;
+    body.classList.toggle('has-gap', !atTop);
+    body.classList.toggle('has-fixed-header', !atTop);
+  }, {root: null, threshold: 0});
+  io.observe(sentinel);
+
+  // 3) Keep a CSS var with the header height for padding compensation
+  function syncHeaderHeight(){
+    var h = header.offsetHeight || 0;
+    d.documentElement.style.setProperty('--header-h', h + 'px');
+  }
+  syncHeaderHeight();
+  w.addEventListener('resize', syncHeaderHeight, {passive:true});
+  w.addEventListener('load', function(){ setTimeout(syncHeaderHeight, 80); });
+})();
+// ===== /Header gap via IntersectionObserver =====
