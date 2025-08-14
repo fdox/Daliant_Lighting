@@ -175,3 +175,18 @@
   w.addEventListener('load', setFloating);
 })();
 // ===== /Daliant header scroll hook =====
+// ===== Header height variable for fixed-on-scroll (2025-08-14) =====
+(function(){
+  if (window.__DALIANT_HEADER_HEIGHT_VAR__) return;
+  window.__DALIANT_HEADER_HEIGHT_VAR__ = true;
+  var d=document, w=window;
+  var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+  function syncHeaderHeight(){
+    if (!header) return;
+    var h = header.offsetHeight || 0;
+    d.documentElement.style.setProperty('--header-h', h + 'px');
+  }
+  syncHeaderHeight();
+  w.addEventListener('resize', syncHeaderHeight, {passive:true});
+  w.addEventListener('load', function(){ setTimeout(syncHeaderHeight, 80); });
+})();

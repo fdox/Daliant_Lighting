@@ -1427,3 +1427,22 @@ body.is-scrolled > header:first-of-type{
   box-shadow: 0 10px 30px rgba(0,0,0,.14);
 }
 /* ===== /Header polish ===== */
+/* ===== Header gap & fixed-on-scroll (2025‑08‑14) ===== */
+:root{
+  /* Bigger visible gap above header when scrolled */
+  --header-gap: clamp(28px, 6vw, 64px);
+}
+/* Add top padding only while scrolled so content doesn't jump when header becomes fixed */
+body.is-scrolled{ padding-top: var(--header-h, 0px); }
+
+/* When scrolled: make header fixed, centered, rounded, and lifted */
+body.is-scrolled > header:first-of-type{
+  position: fixed;
+  left: 0; right: 0;
+  top: calc(env(safe-area-inset-top) + var(--header-gap));
+  border-radius: var(--header-radius);
+  box-shadow: 0 10px 30px rgba(0,0,0,.14);
+  z-index: 1000;
+}
+/* (Top-of-page behavior from earlier stays: no shadow, no top rounding) */
+/* ===== /Header gap & fixed-on-scroll ===== */
