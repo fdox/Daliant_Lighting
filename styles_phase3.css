@@ -1401,3 +1401,29 @@ body.is-scrolled > header:first-of-type{
   box-shadow: 0 10px 30px rgba(0,0,0,.14);
 }
 /* ===== /Daliant header ===== */
+/* ===== Header polish — gap on scroll, blend at top (2025‑08‑14) ===== */
+:root{
+  /* distance from top when sticky on scroll (tweak to your taste) */
+  --header-gap: clamp(12px, 2.2vw, 22px);
+  /* iOS safe area (ignored elsewhere) */
+  --safe-top: env(safe-area-inset-top);
+}
+
+/* Top-of-page: blend perfectly — no shadow, no top rounding */
+body > header:first-of-type{
+  /* Ensure sticky header is centered and not full-width (from earlier rules) */
+  /* Key overrides for blend: */
+  top: 0;
+  margin-top: 0 !important; /* cancel earlier margin-based lift */
+  border-radius: 0 0 var(--header-radius) var(--header-radius);
+  box-shadow: none !important;
+}
+
+/* Scrolled state: create a clean gap and show full rounding + shadow */
+body.is-scrolled > header:first-of-type{
+  top: calc(var(--safe-top) + var(--header-gap));
+  margin-top: 0 !important; /* ensure we rely on top, not margin */
+  border-radius: var(--header-radius);
+  box-shadow: 0 10px 30px rgba(0,0,0,.14);
+}
+/* ===== /Header polish ===== */
