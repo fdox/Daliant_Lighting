@@ -1792,3 +1792,30 @@ html.dl-force-fixed body > header:first-of-type{
 /* Neutralize any legacy top-of-page sticky rules */
 html.dl-force-fixed body > header:first-of-type{ position: fixed !important; }
 /* ========================================================================= */
+
+/* === V4 hero fit-to-space (contain) — non-destructive override === */
+:root { --hero-bg-color: #0b0b0b; }
+
+.hero-fit-contain {
+  background-size: contain !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-color: var(--hero-bg-color);
+}
+
+.hero-fit-contain img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+  object-position: center center !important;
+  display: block;
+}
+
+header .logo img,
+.nav img,
+[class*="icon"] img {
+  object-fit: initial !important;
+  height: auto !important;
+}
+
+.hero-fit-contain { /* no height rules here */ }
