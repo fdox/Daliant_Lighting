@@ -574,3 +574,39 @@
   w.addEventListener('load', function(){ setTimeout(toggleStick, 80); });
 })();
 /// ===========================================================================
+// ==== DL search pill injector v2 (2025-08-14) ===============================
+(function(){
+  var d=document;
+  var header=d.querySelector('body > header:first-of-type')||d.querySelector('header');
+  if(!header || d.querySelector('.dl-search')) return; // already present
+
+  // Prefer to mount before the Contact link on the right
+  var contactLink = Array.from(header.querySelectorAll('a')).find(function(a){
+    return /contact/i.test((a.textContent||'').trim());
+  });
+
+  var mount = contactLink ? contactLink.parentNode
+             : header.querySelector('.header-right, .nav-right, nav') || header;
+
+  var form = d.createElement('form');
+  form.className = 'dl-search';
+  form.setAttribute('role','search');
+  form.setAttribute('autocomplete','off');
+  form.setAttribute('action','/search.html'); // adjust later if you add real search
+
+  form.innerHTML =
+    '<input class="dl-search__input" type="search" name="q" placeholder="Search…" aria-label="Search">'+
+    '<button class="dl-search__btn" type="submit" aria-label="Search">'+
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+        '<circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>'+
+        '<line x1="16.65" y1="16.65" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'+
+      '</svg>'+
+    '</button>';
+
+  if (contactLink && mount) {
+    mount.insertBefore(form, contactLink);
+  } else {
+    mount.appendChild(form);
+  }
+})();
+// ============================================================================ 
