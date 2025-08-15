@@ -1828,3 +1828,13 @@ html.dl-force-fixed body > header:first-of-type{ position: fixed !important; }
 /* ========================================================================== */
 /* Hide any legacy search pill inside the header; keep only the new .dl-search */
 html body > header:first-of-type form[role="search"]:not(.dl-search){ display:none !important; }
+/* === DL search de-dupe guard v2 ============================================
+   Hide any search UI (form or div) inside the header that isn't our .dl-search.
+   Modern browsers: :has() catches wrappers; fallback JS removes leftovers. */
+html body > header:first-of-type :is(form,div,nav,section):has(input[type="search"]):not(.dl-search){
+  display: none !important;
+}
+html body > header:first-of-type input[type="search"]:not(.dl-search__input){
+  display: none !important; /* old Safari fallback—JS will remove wrapper */
+}
+/* ========================================================================== */

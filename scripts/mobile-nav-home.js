@@ -640,3 +640,48 @@
   setTimeout(function(){ cleanup(); cleanupByInput(); }, 0);
 })();
 // ============================================================================
+// ==== DL search de-dupe v2 (keep only left-most) — 2025-08-14 ==============
+(function(){
+  if (window.__DALIANT_SEARCH_DEDUPE_V2__) return;
+  window.__DALIANT_SEARCH_DEDUPE_V2__ = true;
+
+  function run(){
+    var d = document;
+    var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+    if (!header) return;
+
+    // Find all elements that LOOK like search widgets (form or div) that contain a search input
+    var widgets = Array.from(header.querySelectorAll('form, div, nav, section'))
+      .filter(function(el){ return el.querySelector('input[type="search"]'); });
+
+    if (widgets.length === 0) return;
+
+    // Determine which to KEEP: prefer the one with .dl-search class; otherwise the first (left-most)
+    var keep = header.querySelector('.dl-search') || widgets[0];
+
+    // If keep is not already .dl-search but contains a search input, tag it so CSS doesn't hide it
+    if (!keep.classList.contains('dl-search')) keep.classList.add('dl-search');
+
+    // Remove every other search widget
+    widgets.forEach(function(el){
+      if (el !== keep && el.parentNode) el.parentNode.removeChild(el);
+    });
+
+    // Also remove any stray search inputs not inside the kept widget
+    Array.from(header.querySelectorAll('input[type="search"]')).forEach(function(inp){
+      if (!keep.contains(inp) && inp.parentNode) {
+        var container = inp.closest('form, .search, .search-container, .search-pill, .searchPill, .header-search, .searchbar, .site-search, .header__search, label, div') || inp;
+        if (container && container !== keep && container.parentNode) container.parentNode.removeChild(container);
+      }
+    });
+  }
+
+  // Run when DOM is ready *and* re-run after load in case late JS injects again
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function(){ run(); setTimeout(run, 50); });
+  } else {
+    run(); setTimeout(run, 50);
+  }
+  window.addEventListener('load', function(){ setTimeout(run, 0); setTimeout(run, 200); });
+})();
+// ============================================================================ 
