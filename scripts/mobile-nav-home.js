@@ -925,3 +925,56 @@
   }
 })();
 // ==== /Daliant search canonicalizer v5 ======================================
+// ==== Daliant: search keep-left v6 (2025-08-14) =============================
+(function(){
+  if (window.__DALIANT_SEARCH_KEEPLEFT_V6__) return;
+  window.__DALIANT_SEARCH_KEEPLEFT_V6__ = true;
+
+  var d=document;
+
+  function candidates(header){
+    var list = Array.from(header.querySelectorAll('form, div, section, nav, label'))
+      .filter(function(el){
+        if (el === header) return false;
+        // Count only elements that clearly behave like a search widget
+        var hasInput = el.querySelector('input[type="search"], input[placeholder*="search" i], input[aria-label*="search" i]');
+        var name = ((el.className||'')+' '+(el.id||'')+' '+(el.getAttribute && el.getAttribute('aria-label')||'')).toLowerCase();
+        var named = /(^|\\b)(search|site-search|searchbar|header-search|nav-search|search-pill|searchpill|search_input)(\\b|$)/.test(name);
+        return !!(hasInput || named);
+      });
+    // Keep deepest nodes (avoid counting wrappers around the real widget)
+    return list.filter(function(el){ return !list.some(function(other){ return other!==el && other.contains(el); }); });
+  }
+
+  function leftMost(list){
+    return list.reduce(function(best, el){
+      var r = el.getBoundingClientRect ? el.getBoundingClientRect() : {left:1e9};
+      if (!best) return el;
+      var b = best.getBoundingClientRect ? best.getBoundingClientRect() : {left:1e9};
+      return (r.left < b.left) ? el : best;
+    }, null);
+  }
+
+  function clean(){
+    var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+    if (!header) return;
+
+    var list = candidates(header);
+    if (list.length <= 1) return;               // nothing to do
+
+    var keep = leftMost(list);                   // ALWAYS keep the left-most (green one)
+    list.forEach(function(el){
+      if (el !== keep && el.parentNode) el.parentNode.removeChild(el);
+    });
+  }
+
+  function run(){ clean(); setTimeout(clean, 50); }
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', run); else run();
+  window.addEventListener('load', function(){ setTimeout(clean,0); setTimeout(clean,200); });
+
+  var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+  if (header && 'MutationObserver' in window){
+    new MutationObserver(clean).observe(header, {childList:true, subtree:true});
+  }
+})();
+// ==== /keep-left v6 ==========================================================
