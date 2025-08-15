@@ -828,3 +828,100 @@
   }
 })();
 // =============================================================================
+// ==== Daliant search canonicalizer v5 — keep ONLY the left pill (2025-08-14)
+(function(){
+  if (window.__DALIANT_SEARCH_CANON_V5__) return;
+  window.__DALIANT_SEARCH_CANON_V5__ = true;
+
+  // Disable any earlier de-dupe attempts so they don't fight this
+  window.__DALIANT_SEARCH_DEDUPE_V1__ = true;
+  window.__DALIANT_SEARCH_DEDUPE_V2__ = true;
+  window.__DALIANT_SEARCH_DEDUPE_V3__ = true;
+  window.__DALIANT_SEARCH_DEDUPE_V4__ = true;
+
+  var d = document;
+
+  function svgIcon(){
+    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><line x1="16.65" y1="16.65" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  }
+
+  function buildCanonical(){
+    var f = d.createElement('form');
+    f.className = 'dl-search';
+    f.setAttribute('role','search');
+    f.setAttribute('autocomplete','off');
+    f.setAttribute('action','/search.html'); // adjust when real search is wired
+    f.innerHTML =
+      '<input class="dl-search__input" type="search" name="q" placeholder="Search…" aria-label="Search">'+
+      '<button class="dl-search__btn" type="submit" aria-label="Search">'+ svgIcon() +'</button>';
+    return f;
+  }
+
+  function headerEl(){
+    return d.querySelector('body > header:first-of-type') || d.querySelector('header');
+  }
+
+  function leftMost(els){
+    return els.reduce(function(best, el){
+      var x = (el.getBoundingClientRect ? el.getBoundingClientRect().left : 1e9);
+      if (!best) return el;
+      var bx = best.getBoundingClientRect ? best.getBoundingClientRect().left : 1e9;
+      return x < bx ? el : best;
+    }, null);
+  }
+
+  function purgeAndEnsure(){
+    var header = headerEl(); if (!header) return;
+
+    // 1) Remove ANY search widget that is not the canonical .dl-search
+    //    (look for search inputs and common search wrappers)
+    var inputs = Array.from(header.querySelectorAll('input[type="search"], input[placeholder*="search" i], input[aria-label*="search" i]'));
+    inputs.forEach(function(inp){
+      var keep = inp.closest('.dl-search');
+      if (keep) return; // it's ours, keep it
+      var wrap = inp.closest('form, .dl-search, .search, .search-container, .search-pill, .searchPill, .header-search, .site-search, .searchbar, .nav-search, label, div');
+      if (wrap && !wrap.classList.contains('dl-search') && wrap.parentNode) wrap.parentNode.removeChild(wrap);
+    });
+    Array.from(header.querySelectorAll('form[role="search"]:not(.dl-search)')).forEach(function(f){
+      if (f.parentNode) f.parentNode.removeChild(f);
+    });
+
+    // 2) If multiple .dl-search remain, keep the LEFT-most by geometry
+    var pills = Array.from(header.querySelectorAll('.dl-search'));
+    if (pills.length > 1){
+      var keepLeft = leftMost(pills);
+      pills.forEach(function(el){ if (el !== keepLeft && el.parentNode) el.parentNode.removeChild(el); });
+    }
+
+    // 3) If none remains, build and insert canonical pill BEFORE "Contact" link
+    var pill = header.querySelector('.dl-search');
+    if (!pill){
+      pill = buildCanonical();
+      var contact = Array.from(header.querySelectorAll('a')).find(function(a){ return /contact/i.test((a.textContent||'').trim()); });
+      var mount = contact ? contact.parentNode : (header.querySelector('.header-right, .nav-right, nav') || header);
+      if (contact && mount) mount.insertBefore(pill, contact); else mount.appendChild(pill);
+    }else{
+      // Ensure pill sits immediately before "Contact"
+      var contact = Array.from(header.querySelectorAll('a')).find(function(a){ return /contact/i.test((a.textContent||'').trim()); });
+      if (contact && contact.parentNode){
+        if (!pill.parentNode || pill.parentNode !== contact.parentNode || pill.nextSibling !== contact){
+          contact.parentNode.insertBefore(pill, contact);
+        }
+      }
+    }
+  }
+
+  function run(){ try{ purgeAndEnsure(); }catch(e){} }
+
+  // Run now, at DOM ready, after load, and on header mutations
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', function(){ run(); setTimeout(run,50); });
+  else { run(); setTimeout(run,50); }
+  window.addEventListener('load', function(){ setTimeout(run,0); setTimeout(run,200); });
+
+  var h = headerEl();
+  if (h && 'MutationObserver' in window){
+    var mo = new MutationObserver(run);
+    mo.observe(h, {childList:true, subtree:true});
+  }
+})();
+// ==== /Daliant search canonicalizer v5 ======================================
