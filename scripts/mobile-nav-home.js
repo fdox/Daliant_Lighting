@@ -1,3 +1,11 @@
+// ==== Daliant: disable prior search de-dupes (flags v4) ======================
+(function(){ try{
+  window.__DALIANT_SEARCH_DEDUPE_FLAGS_V4__ = true;
+  window.__DALIANT_SEARCH_DEDUPE_V1__ = true;
+  window.__DALIANT_SEARCH_DEDUPE_V2__ = true;
+  window.__DALIANT_SEARCH_DEDUPE_V3__ = true;
+} catch(e){} })();
+// =============================================================================
 // ==== Daliant: disable old search de-dupe blocks (flags v3, 2025-08-14) ====
 (function(){ try{
   window.__DALIANT_SEARCH_DEDUPE_FLAGS_V3__ = true;
@@ -739,3 +747,84 @@
   window.addEventListener('load', function(){ setTimeout(run,0); setTimeout(run,200); });
 })();
 // ============================================================================
+// ==== DL search de-dupe v4 (keep left-most .dl-search) — 2025-08-14 =========
+(function(){
+  if (window.__DALIANT_SEARCH_DEDUPE_V4__) return;
+  window.__DALIANT_SEARCH_DEDUPE_V4__ = true;
+
+  var d = document;
+
+  function isSearchy(el){
+    if (!el) return false;
+    if (el.classList && el.classList.contains('dl-search')) return true;
+
+    // Must have a search input OR be clearly named as search (class/id/aria/placeholder)
+    var hasInput = el.querySelector('input[type="search"], input[placeholder*="search" i], input[aria-label*="search" i]');
+    var name = ((el.className||'') + ' ' + (el.id||'')).toLowerCase();
+    var named = /(^|\b)(search|site-search|searchbar|header-search|nav-search|searchpill|search-input)(\b|$)/i.test(name);
+    var aria = (el.getAttribute && el.getAttribute('aria-label')||'').toLowerCase().includes('search');
+    return !!(hasInput || named || aria);
+  }
+
+  function collectCandidates(header){
+    // Only inside the header; never consider the whole <nav> unless it's explicitly search-named
+    var list = Array.from(header.querySelectorAll('form, div, section, label, nav'))
+      .filter(function(el){
+        if (el.tagName === 'NAV' && !/search/i.test((el.className||'')+' '+(el.id||''))) return false;
+        return isSearchy(el);
+      });
+    // De-dup containers that simply wrap the real .dl-search (keep closest container)
+    return list.filter(function(el){
+      var inKeep = el.querySelector('.dl-search');
+      return !inKeep || el.classList.contains('dl-search');
+    });
+  }
+
+  function chooseKeep(header, candidates){
+    var keep = header.querySelector('.dl-search');
+    if (keep) return keep;
+    // Fallback: left-most candidate by DOM order
+    return candidates[0] || null;
+  }
+
+  function cleanup(){
+    var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+    if (!header) return;
+
+    var candidates = collectCandidates(header);
+    if (candidates.length <= 1) return;
+
+    var keep = chooseKeep(header, candidates);
+    if (!keep) return;
+
+    // Ensure kept widget has .dl-search so future checks recognize it
+    keep.classList.add('dl-search');
+
+    candidates.forEach(function(el){
+      if (el !== keep && el.parentNode) {
+        el.parentNode.removeChild(el);
+      }
+    });
+
+    // Remove stray inputs not inside the kept widget
+    Array.from(header.querySelectorAll('input[type="search"], input[placeholder*="search" i]'))
+      .forEach(function(inp){
+        if (!keep.contains(inp)) {
+          var wrap = inp.closest('form, .search, .search-container, .header-search, .site-search, .searchbar, .nav-search, .search-pill, label, div') || inp;
+          if (wrap && wrap !== keep && wrap.parentNode) wrap.parentNode.removeChild(wrap);
+        }
+      });
+  }
+
+  // Run now, at DOM ready, after load, and whenever header mutates
+  function runAll(){ cleanup(); setTimeout(cleanup,50); }
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', runAll); else runAll();
+  window.addEventListener('load', function(){ setTimeout(cleanup,0); setTimeout(cleanup,200); });
+
+  var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+  if (header && 'MutationObserver' in window){
+    var mo = new MutationObserver(function(){ cleanup(); });
+    mo.observe(header, {childList:true, subtree:true});
+  }
+})();
+// =============================================================================
