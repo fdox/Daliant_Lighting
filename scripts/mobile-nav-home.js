@@ -1,3 +1,10 @@
+// ==== Daliant: disable old search de-dupe blocks (flags v3, 2025-08-14) ====
+(function(){ try{
+  window.__DALIANT_SEARCH_DEDUPE_FLAGS_V3__ = true;
+  window.__DALIANT_SEARCH_DEDUPE_V1__ = true;
+  window.__DALIANT_SEARCH_DEDUPE_V2__ = true;
+} catch(e){} })();
+// ============================================================================
 // ==== Daliant: disable legacy header scroll logic & force fixed (2025-08-14) ====
 (function(){
   try{
@@ -685,3 +692,50 @@
   window.addEventListener('load', function(){ setTimeout(run, 0); setTimeout(run, 200); });
 })();
 // ============================================================================ 
+// ==== DL search de-dupe v3 (safe) — 2025-08-14 ==============================
+(function(){
+  if (window.__DALIANT_SEARCH_DEDUPE_V3__) return;
+  window.__DALIANT_SEARCH_DEDUPE_V3__ = true;
+
+  var d=document;
+  function run(){
+    var header=d.querySelector('body > header:first-of-type')||d.querySelector('header');
+    if(!header) return;
+
+    var containerSel = [
+      'form[role="search"]',
+      'form[class*="search" i]',
+      'form[id*="search" i]',
+      '.search','.search-container','.search-pill','.searchPill',
+      '.header-search','.header__search','.site-search','.searchbar','.nav-search',
+      '[data-search]','[data-component="search"]','[data-role="search"]',
+      'label[for*="search" i]','.search-input-wrap','.search-wrapper'
+    ].join(',');
+
+    // Only consider explicit "search" wrappers; never generic div/nav that holds other content
+    var candidates = Array.from(header.querySelectorAll(containerSel))
+      .filter(function(el){ return el.querySelector('input[type="search"]'); });
+
+    if (candidates.length <= 1) return;
+
+    // Keep the .dl-search (left pill) if present; else the left-most candidate
+    var keep = header.querySelector('.dl-search') || candidates[0];
+    if (!keep.classList.contains('dl-search')) keep.classList.add('dl-search');
+
+    candidates.forEach(function(el){
+      if (el !== keep && el.parentNode) el.parentNode.removeChild(el);
+    });
+
+    // Remove stray inputs not inside the kept widget (closest search-y wrapper only)
+    Array.from(header.querySelectorAll('input[type="search"]')).forEach(function(inp){
+      if (keep.contains(inp)) return;
+      var wrapper = inp.closest(containerSel) || inp.closest('form');
+      if (wrapper && wrapper !== keep && wrapper.parentNode) wrapper.parentNode.removeChild(wrapper);
+    });
+  }
+
+  if (d.readyState === 'loading'){ d.addEventListener('DOMContentLoaded', function(){ run(); setTimeout(run,50); }); }
+  else { run(); setTimeout(run,50); }
+  window.addEventListener('load', function(){ setTimeout(run,0); setTimeout(run,200); });
+})();
+// ============================================================================
