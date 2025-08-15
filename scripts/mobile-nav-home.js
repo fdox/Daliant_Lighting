@@ -1,3 +1,34 @@
+// ==== Daliant: disable legacy header scroll logic & force fixed (2025-08-14) ====
+(function(){
+  try{
+    // Stop any previously-injected header controllers from running
+    var w = window;
+    w.__DALIANT_HEADER_FLOATING__ = true;
+    w.__DALIANT_HEADER_OBSERVER__ = true;
+    w.__DALIANT_HEADER_CTRL__     = true;
+    w.__DALIANT_REVEAL_V3__       = true;
+    w.__DALIANT_REVEAL_UP_V4__    = true;
+    w.__DALIANT_STICK_V5__        = true;
+
+    // Force the fixed header at our desired offset from first paint
+    var d = document;
+    var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+    if (header){
+      // Add a marker class on <html> for our CSS override
+      d.documentElement.classList.add('dl-force-fixed');
+
+      // Inline styles trump legacy CSS and prevent any flicker at top
+      header.style.position   = 'fixed';
+      header.style.left       = '0';
+      header.style.right      = '0';
+      header.style.top        = 'calc(env(safe-area-inset-top) + var(--header-gap))';
+      header.style.zIndex     = '1000';
+      header.style.transition = 'none';
+      // width/radius/shadow stay in CSS so they’re easy to tweak
+    }
+  }catch(e){}
+})();
+// ==== /Daliant header hard-lock =================================================
 /* =========================================================================
    Header UI (production)
    - Mobile: hamburger (left), centered logo, login icon (right).

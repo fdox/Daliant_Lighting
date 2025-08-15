@@ -1770,3 +1770,25 @@ body.dl-has-gap > header:first-of-type{
 /* Ensure no padding compensation is applied from earlier scripts */
 body, body.has-fixed-header, body.dl-fixed-header{ padding-top: 0 !important; }
 /* ========================================================================== */
+/* ===== Header v7 — hard-lock Lutron style (2025-08-14) ===================== */
+:root{
+  --header-gap: clamp(10px, 2.5vw, 22px); /* keep your preferred small gap */
+  --header-max: 1240px;
+  --header-gutter: clamp(8px, 3vw, 24px);
+  --header-radius: 14px;
+}
+/* When <html> has dl-force-fixed, the header is ALWAYS fixed with the gap */
+html.dl-force-fixed body > header:first-of-type{
+  position: fixed !important;
+  left: 0; right: 0;
+  top: calc(env(safe-area-inset-top) + var(--header-gap)) !important;
+  width: min(var(--header-max), calc(100% - (var(--header-gutter) * 2))) !important;
+  margin-left: auto; margin-right: auto;
+  border-radius: var(--header-radius) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,.14) !important;
+  z-index: 1000;
+  opacity: 1 !important; transform: none !important; transition: none !important;
+}
+/* Neutralize any legacy top-of-page sticky rules */
+html.dl-force-fixed body > header:first-of-type{ position: fixed !important; }
+/* ========================================================================= */
