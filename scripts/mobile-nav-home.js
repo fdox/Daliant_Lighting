@@ -512,3 +512,34 @@
   w.addEventListener('load',  function(){ setTimeout(function(){ recompute(); onScroll(); }, 100); });
 })();
 // ============================================================================
+// ==== Header stick controller (v5, 2025-08-14) ==============================
+(function(){
+  if (window.__DALIANT_STICK_V5__) return;
+  window.__DALIANT_STICK_V5__ = true;
+
+  var d = document, w = window, body = d.body;
+  var header = d.querySelector('body > header:first-of-type') || d.querySelector('header');
+  if (!header) return;
+
+  // Create a sentinel AFTER the header to know when we've scrolled past it
+  var after = d.querySelector('[data-header-after-stick]');
+  if (!after){
+    after = d.createElement('div');
+    after.setAttribute('data-header-after-stick','');
+    after.style.cssText = 'height:1px;margin:0;padding:0;';
+    header.parentNode.insertBefore(after, header.nextSibling);
+  }
+
+  function toggleStick(){
+    var top = after.getBoundingClientRect().top;
+    var past = top <= 0; // sentinel has gone above the viewport
+    body.classList.toggle('dl-stick', past);
+  }
+
+  // Initialize & listen
+  toggleStick();
+  w.addEventListener('scroll', toggleStick, {passive:true});
+  w.addEventListener('resize', toggleStick, {passive:true});
+  w.addEventListener('load', function(){ setTimeout(toggleStick, 80); });
+})();
+/// ===========================================================================
