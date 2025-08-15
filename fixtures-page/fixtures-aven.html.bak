@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aven — Daliant Lighting</title>
+  <meta name="description" content="Aven — a DALI-ready tunable-white fixture from Daliant Lighting. Simple control, refined light." />
+  <!-- Phase 3 unified stylesheet (document‑relative path from /fixtures-page/) -->
+  <link rel="stylesheet" href="../styles_phase3.css?v=1754856918" />
+</head>
+<body>
+  <!-- Sticky Top Nav (Phase 3) -->
+  <header class="site-header">
+    <div class="nav wrap">
+      <nav class="nav-left">
+        <ul>
+          <li class="has-mega"><a href="explore-fixtures.html">Explore Fixtures</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../blog.html">Blog</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-logo">
+        <a href="../index.html" aria-label="Daliant Lighting home">
+          <img src="../images/logo-daliant.svg" alt="Daliant Lighting" />
+        </a>
+      </div>
+
+      <nav class="nav-right">
+        <ul>
+          <li><a href="../search.html">Search</a></li>
+          <li><a href="../login.html">Log In</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page wrap">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span aria-hidden="true">›</span>
+      <a href="explore-fixtures.html">Fixtures</a>
+      <span aria-hidden="true">›</span>
+      <span class="current">Aven</span>
+    </nav>
+
+    <!-- Product Hero -->
+    <section class="product">
+      <div class="product-grid">
+        <!-- Gallery -->
+        <div class="product-gallery">
+          <div class="gallery-main">
+            <img id="mainImage" src="../images/fixtures/aven/aven-01.jpg" alt="Aven fixture front view" />
+          </div>
+          <div class="gallery-thumbs" role="list" aria-label="More images">
+            <button class="thumb is-active" data-src="../images/fixtures/aven/aven-01.jpg">
+              <img src="../images/fixtures/aven/aven-01-thumb.jpg" alt="Front" />
+            </button>
+            <button class="thumb" data-src="../images/fixtures/aven/aven-02.jpg">
+              <img src="../images/fixtures/aven/aven-02-thumb.jpg" alt="Angle" />
+            </button>
+            <button class="thumb" data-src="../images/fixtures/aven/aven-03.jpg">
+              <img src="../images/fixtures/aven/aven-03-thumb.jpg" alt="Detail" />
+            </button>
+            <button class="thumb" data-src="../images/fixtures/aven/aven-04.jpg">
+              <img src="../images/fixtures/aven/aven-04-thumb.jpg" alt="Installed" />
+            </button>
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div class="product-details">
+          <h1 class="product-title">Aven</h1>
+          <p class="product-sub">Tunable‑white • DALI‑2 ready • Indoor</p>
+
+          <!-- Selectors (placeholders; wire up later to backend/cart) -->
+          <form class="selectors" action="#" method="get">
+            <div class="field">
+              <label for="size">Size</label>
+              <div class="options" id="size">
+                <label><input type="radio" name="size" value="small" checked /> Small</label>
+                <label><input type="radio" name="size" value="medium" /> Medium</label>
+                <label><input type="radio" name="size" value="large" /> Large</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cct">Color (Tunable White)</label>
+              <select id="cct" name="cct">
+                <option value="2200-4000">2200–4000K</option>
+                <option value="2700-5000" selected>2700–5000K</option>
+                <option value="2700-6500">2700–6500K</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="comm">Communication</label>
+              <div class="options" id="comm">
+                <label><input type="radio" name="comm" value="wired-dali" checked /> Wired DALI‑2</label>
+                <label><input type="radio" name="comm" value="wireless-zigbee"> Wireless (Zigbee→DALI bridge)</label>
+              </div>
+            </div>
+
+            <div class="cta-row">
+              <a class="btn primary" href="../contact.html">Request Quote</a>
+              <a class="btn" href="../contact.html">Ask a Question</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <section class="product-tabs">
+      <div class="tabs">
+        <button class="tab is-active" data-tab="desc">Description</button>
+        <button class="tab" data-tab="specs">Dimensions &amp; Specs</button>
+        <button class="tab" data-tab="ship">Shipping &amp; Returns</button>
+      </div>
+
+      <div class="tab-panels">
+        <article id="tab-desc" class="tab-panel is-active">
+          <p>Aven pairs architectural simplicity with DALI‑2 control. Every unit ships with tunable white as standard, so scenes feel natural from sunrise to evening.</p>
+          <ul>
+            <li>Tunable‑white out of the box</li>
+            <li>Compatible with DALI‑2 and Control4/Lutron via DALI gateways</li>
+            <li>Available in wired or wireless (Zigbee→DALI bridge) configurations</li>
+          </ul>
+        </article>
+
+        <article id="tab-specs" class="tab-panel">
+          <div class="spec-grid">
+            <div>
+              <h4>Optics</h4>
+              <ul>
+                <li>CCT Range: 2700–5000K (options available)</li>
+                <li>CRI: 90+ (typ.)</li>
+                <li>Beam Options: Flood / Spot (specify)</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Electrical</h4>
+              <ul>
+                <li>Input: 120–277V (driver dependent)</li>
+                <li>Control: DALI‑2 (TW)</li>
+                <li>Wireless Option: Zigbee→DALI bridge</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Mechanical</h4>
+              <ul>
+                <li>Trim: Round / Square</li>
+                <li>Cutout: see size options</li>
+                <li>Finish: White / Black / Custom</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article id="tab-ship" class="tab-panel">
+          <p>Lead time typically 2–4 weeks depending on configuration. Items are built to order. Returns accepted within 30 days for unused products in original packaging; RMA required.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>© <span id="year"></span> Daliant Lighting. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Minimal JS for gallery + tabs; no external deps -->
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Gallery switching
+    const mainImg = document.getElementById('mainImage');
+    document.querySelectorAll('.gallery-thumbs .thumb').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const src = btn.getAttribute('data-src');
+        if (src && mainImg) {
+          mainImg.src = src;
+        }
+        document.querySelectorAll('.gallery-thumbs .thumb').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+      });
+    });
+
+    // Tabs
+    const tabButtons = document.querySelectorAll('.tabs .tab');
+    const panels = document.querySelectorAll('.tab-panel');
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-tab');
+        tabButtons.forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        panels.forEach(p => p.classList.toggle('is-active', p.id === 'tab-' + id));
+      });
+    });
+  </script>
+  <script defer src="/scripts/mobile-nav-home.js?v=1754856918""></script>
+</body>
+</html>

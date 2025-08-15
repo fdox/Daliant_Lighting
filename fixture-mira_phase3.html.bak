@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mira | Daliant Lighting</title>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fdox.github.io/fixtures-page/fixture-mira.html" rel="canonical"/>
+<meta content="Daliant Lighting" property="og:site_name"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="styles_phase3.css?v=1754856918" rel="stylesheet"/>
+</head>
+<body>
+<header>
+<div class="nav-container header-flex">
+<nav aria-label="Primary" class="nav-primary">
+<ul>
+<li><a href="fixtures-page/explore-fixtures.html">Explore Fixtures</a>
+<div class="dropdown">
+<div class="dropdown-column">
+<h4>Indoor Fixtures</h4>
+<a href="#">Recessed</a>
+<a href="#">Pendants</a>
+<a href="#">Chandeliers</a>
+<a href="#">Lamps</a>
+<a href="#">Sconces</a>
+<a href="#">All Fixtures</a>
+</div>
+<div class="dropdown-column">
+<h4>Outdoor Fixtures</h4>
+<a href="#">Wall Lighting</a>
+<a href="#">Overhead Lighting</a>
+</div>
+</div>
+</li>
+<li><a href="#">About</a></li>
+<li><a href="#">Blog</a></li>
+</ul>
+</nav>
+<div class="logo logo-align">
+<a href="index_builder_png_phase3.html"></a><a href="index.html"><img alt="Daliant Lighting Logo" class="logo-img" decoding="async" height="227" loading="lazy" src="images/daliant-logo-cropped.png" width="860"/></a>
+</div>
+<div class="nav-right nav-flex"><a href="#">Search</a><a href="#">Log In</a><a href="#">Contact</a></div>
+</div>
+</header>
+<main class="container product-detail">
+<section class="gallery">
+<div class="gallery-stage">
+<img alt="Mira main image" decoding="async" id="currentImage" src="images/mira-1.png"/>
+<button aria-label="Previous image" class="gallery-arrow gallery-arrow-left" id="prevBtn" type="button">‹</button>
+<button aria-label="Next image" class="gallery-arrow gallery-arrow-right" id="nextBtn" type="button">›</button>
+</div>
+<div aria-label="Image thumbnails" class="thumbs" role="list">
+<img alt="Mira thumb 1" data-index="0" decoding="async" loading="lazy" src="images/mira-1.png"/><img alt="Mira thumb 2" data-index="1" decoding="async" loading="lazy" src="images/mira-1.png"/><img alt="Mira thumb 3" data-index="2" decoding="async" loading="lazy" src="images/mira-2.png"/><img alt="Mira thumb 4" data-index="3" decoding="async" loading="lazy" src="images/mira-3.png"/><img alt="Mira thumb 5" data-index="4" decoding="async" loading="lazy" src="images/mira-4.png"/><img alt="Mira thumb 6" data-index="5" decoding="async" loading="lazy" src="images/mira-1.png"/><img alt="Mira thumb 7" data-index="6" decoding="async" loading="lazy" src="images/mira-2.png"/><img alt="Mira thumb 8" data-index="7" decoding="async" loading="lazy" src="images/mira-3.png"/><img alt="Mira thumb 9" data-index="8" decoding="async" loading="lazy" src="images/mira-4.png"/>
+</div>
+</section>
+<aside class="sidebar">
+<h1 class="product-title">Mira Outdoor Wall Fixture</h1>
+<p class="sku">SKU: MIR-OUT-WALL-01</p>
+<div class="options">
+<div class="option">
+<h3>Color</h3>
+<div class="pills"><span class="pill is-active">Tunable White</span></div>
+</div>
+<div class="option">
+<h3>Size</h3>
+<div class="pills" id="sizePills">
+<button class="pill" data-size="small" type="button">Small</button>
+<button class="pill is-active" data-size="medium" type="button">Medium</button>
+<button class="pill" data-size="large" type="button">Large</button>
+</div>
+</div>
+<div class="option">
+<h3>Communication</h3>
+<div class="pills" id="commPills">
+<button class="pill is-active" data-comm="wired" type="button">Wired</button>
+<button class="pill" data-comm="wireless" type="button">Wireless</button>
+</div>
+</div>
+<div class="option qty-wrap">
+<h3>Quantity</h3>
+<div class="qty">
+<button aria-label="Decrease quantity" id="decQty" type="button">–</button>
+<span aria-live="polite" id="qty">1</span>
+<button aria-label="Increase quantity" id="incQty" type="button">+</button>
+</div>
+</div>
+<a class="btn btn-block" href="#quote">Add to Quote</a>
+</div>
+</aside>
+</main>
+<section class="container product-tabs">
+<nav aria-label="Product details" class="tabs">
+<button class="tab active" data-tab="desc" type="button">Description</button>
+<button class="tab" data-tab="specs" type="button">Dimensions &amp; Specs</button>
+<button class="tab" data-tab="shipping" type="button">Shipping &amp; Returns</button>
+</nav>
+<div id="tabContent">
+<div data-content="desc">
+<p>The Mira Outdoor Wall Fixture combines sleek contemporary design with integrated DALI-2 control and tunable white functionality.</p>
+</div>
+<div class="hidden" data-content="specs">
+<ul>
+<li>200 lm</li>
+<li>2700K–4000K</li>
+<li>5 W</li>
+<li>Die-cast aluminum</li>
+<li>IP65</li>
+</ul>
+</div>
+<div class="hidden" data-content="shipping">
+<p>Ships within 3–5 business days.</p>
+<p>Free shipping on orders over $200.</p>
+<p>Returns accepted within 30 days of delivery.</p>
+</div>
+</div>
+</section>
+<footer class="footer-main">
+<div class="container footer-grid">
+<div>
+<h4 class="footer-heading">RESOURCES</h4>
+<p><a href="#">Terms &amp; Conditions</a></p>
+<p><a href="#">FAQs</a></p>
+<p><a href="#">Product Resources</a></p>
+<p><a href="#">Downloads</a></p>
+<p><a href="#">Warranty</a></p>
+</div>
+<div>
+<h4 class="footer-heading">COMPANY</h4>
+<p><a href="#">About Us</a></p>
+<p><a href="#">Contact Us</a></p>
+<p><a href="#">Shipping &amp; Delivery</a></p>
+<p><a href="#">Join Our Team</a></p>
+</div>
+<div>
+<h4 class="footer-heading">FOR LIGHTING PRO</h4>
+<p><a href="#">Manage Account</a></p>
+<p><a href="#">Request an Account</a></p>
+<p><a href="#">My Orders</a></p>
+<p><a href="#">Partner Insights</a></p>
+</div>
+<div>
+<h4 class="footer-heading">SOCIAL</h4>
+<p><a href="#">Instagram</a></p>
+<p><a href="#">Facebook</a></p>
+<p><a href="#">Pinterest</a></p>
+<p><a href="#">X</a></p>
+</div>
+</div>
+<div style="text-align: center; margin-top: 2rem; color: #444; font-size: 0.8rem;">
+<p>© 2025 Daliant Lighting. All rights reserved.</p>
+</div>
+</footer>
+<script>
+(function(){
+  const images = ['images/mira-1.png', 'images/mira-1.png', 'images/mira-2.png', 'images/mira-3.png', 'images/mira-4.png', 'images/mira-1.png', 'images/mira-2.png', 'images/mira-3.png', 'images/mira-4.png'];
+  let currentIndex = 0;
+  const currentImage = document.getElementById('currentImage');
+  const thumbs = Array.from(document.querySelectorAll('.thumbs img'));
+
+  function updateImage() {
+    currentImage.src = images[currentIndex];
+    thumbs.forEach((t,i)=> t.classList.toggle('is-active', i===currentIndex));
+  }
+  document.getElementById('prevBtn').addEventListener('click', ()=>{ currentIndex = (currentIndex - 1 + images.length) % images.length; updateImage(); });
+  document.getElementById('nextBtn').addEventListener('click', ()=>{ currentIndex = (currentIndex + 1) % images.length; updateImage(); });
+  thumbs.forEach((t,i)=> t.addEventListener('click', ()=>{ currentIndex = i; updateImage(); }));
+  updateImage();
+
+  let qty = 1; const qtySpan = document.getElementById('qty');
+  document.getElementById('incQty').addEventListener('click', ()=>{ qty++; qtySpan.textContent = qty; });
+  document.getElementById('decQty').addEventListener('click', ()=>{ if(qty>1) qty--; qtySpan.textContent = qty; });
+
+  const tabs = document.querySelectorAll('.tabs .tab');
+  const contents = document.querySelectorAll('[data-content]');
+  function setTab(name){
+    tabs.forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+    contents.forEach(c=>c.classList.toggle('hidden', c.dataset.content!==name));
+  }
+  tabs.forEach(t=>t.addEventListener('click', ()=> setTab(t.dataset.tab)));
+  setTab('desc');
+
+  document.addEventListener('click', (e)=>{
+    const t = e.target;
+    if(t.classList.contains('pill')){
+      const wrap = t.parentElement;
+      wrap.querySelectorAll('.pill').forEach(p=>p.classList.remove('is-active'));
+      t.classList.add('is-active');
+    }
+  });
+})();
+</script>
+<script defer src="/scripts/mobile-nav-home.js?v=1754856918"></script>
+</body>
+</html>
