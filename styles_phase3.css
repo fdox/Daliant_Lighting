@@ -1826,3 +1826,5 @@ html.dl-force-fixed body > header:first-of-type{ position: fixed !important; }
   .dl-search{ display:none; } /* desktop-only pill */
 }
 /* ========================================================================== */
+/* Hide any legacy search pill inside the header; keep only the new .dl-search */
+html body > header:first-of-type form[role="search"]:not(.dl-search){ display:none !important; }

@@ -610,3 +610,33 @@
   }
 })();
 // ============================================================================ 
+// ==== Daliant: de-duplicate search forms in header (2025-08-14) ============
+(function(){
+  if (window.__DALIANT_SEARCH_DEDUPE_V1__) return;
+  window.__DALIANT_SEARCH_DEDUPE_V1__ = true;
+
+  var d=document, header=d.querySelector('body > header:first-of-type')||d.querySelector('header');
+  if(!header) return;
+
+  // Prefer to keep the new .dl-search; otherwise keep the first found.
+  function cleanup(){
+    var forms = Array.from(header.querySelectorAll('form[role="search"]'));
+    if (forms.length <= 1) return;
+    var keep = header.querySelector('.dl-search') || forms[0];
+    forms.forEach(function(f){ if (f !== keep && f.parentNode) f.parentNode.removeChild(f); });
+  }
+
+  // Also catch any non-role form that contains a search input (paranoid fallback)
+  function cleanupByInput(){
+    var inputs = Array.from(header.querySelectorAll('input[type="search"]'));
+    inputs.forEach(function(inp){
+      var f = inp.closest('form');
+      if (f && !f.classList.contains('dl-search') && f.parentNode) f.parentNode.removeChild(f);
+    });
+  }
+
+  cleanup(); cleanupByInput();
+  // Re-run after the injector (if any) and on late DOM changes
+  setTimeout(function(){ cleanup(); cleanupByInput(); }, 0);
+})();
+// ============================================================================
